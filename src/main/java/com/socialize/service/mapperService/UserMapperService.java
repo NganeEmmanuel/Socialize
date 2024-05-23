@@ -12,7 +12,7 @@ public class UserMapperService implements MapperService<User, UserDTO> {
         User user = new User();
         user.setId(userDTO.getId());
         user.setName(userDTO.getName());
-        user.setUserName(userDTO.getUsername());
+        user.setUsername(userDTO.getUsername());
         user.setAuthority(userDTO.getAuthority());
         user.setProfilePicture(userDTO.getProfilePicture());
         user.setMediaMimeType(userDTO.getMediaMimeType());
@@ -25,7 +25,7 @@ public class UserMapperService implements MapperService<User, UserDTO> {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
-        userDTO.setUsername(user.getUserName());
+        userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setAuthority(user.getAuthority());
         userDTO.setProfilePicture(user.getProfilePicture());

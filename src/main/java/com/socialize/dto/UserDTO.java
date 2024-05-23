@@ -15,7 +15,7 @@ public class UserDTO {
     private String name;
     private String username;
     private String email;
-    private Set<UserAuthority> authority;
+    private UserAuthority authority;
     private byte[] profilePicture;
     private String mediaMimeType;
     // Additional fields as needed
