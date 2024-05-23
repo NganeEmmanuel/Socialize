@@ -1,4 +1,4 @@
-package com.socialize.service;
+package com.socialize.service.entityService;
 
 import com.socialize.repository.CommentRepository;
 import org.springframework.stereotype.Service;

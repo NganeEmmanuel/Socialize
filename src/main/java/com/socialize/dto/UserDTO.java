@@ -1,8 +1,11 @@
 package com.socialize.dto;
 
+import com.socialize.enums.UserAuthority;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -12,6 +15,7 @@ public class UserDTO {
     private String name;
     private String username;
     private String email;
+    private Set<UserAuthority> authority;
     private byte[] profilePicture;
     private String mediaMimeType;
     // Additional fields as needed

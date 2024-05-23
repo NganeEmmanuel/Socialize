@@ -1,6 +1,6 @@
 package com.socialize.dto;
 
-import com.socialize.helpers.modelHelpers.ReactionType;
+import com.socialize.enums.ReactionType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;

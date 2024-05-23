@@ -1,4 +1,4 @@
-package com.socialize.service;
+package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
 import com.socialize.repository.UserRepository;

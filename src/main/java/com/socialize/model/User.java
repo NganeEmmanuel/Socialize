@@ -1,15 +1,13 @@
 package com.socialize.model;
 
-import com.socialize.helpers.modelHelpers.UserStatus;
+import com.socialize.enums.UserAuthority;
+import com.socialize.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -31,6 +29,10 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Set<UserAuthority> authority;
 
     @Lob
     private byte[] profilePicture;

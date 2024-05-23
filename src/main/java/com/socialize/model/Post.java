@@ -1,6 +1,6 @@
 package com.socialize.model;
 
-import com.socialize.helpers.modelHelpers.PostStatus;
+import com.socialize.enums.PostStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

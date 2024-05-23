@@ -1,4 +1,4 @@
-package com.socialize.helpers.modelHelpers;
+package com.socialize.enums;
 
 public enum ReactionType {
     THUMB_UP,

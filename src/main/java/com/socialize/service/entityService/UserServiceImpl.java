@@ -1,8 +1,9 @@
-package com.socialize.service;
+package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
+import com.socialize.service.entityService.UserService;
 import com.socialize.service.mapperService.UserMapperService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long userId) {
-        User user = null;
+        User user;
         try {
             user = userRepository.findById(userId)
                     .orElseThrow(ChangeSetPersister.NotFoundException::new);
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        User user = null;
+        User user;
         try {
             user = userRepository.findById(userId)
                     .orElseThrow(ChangeSetPersister.NotFoundException::new);
