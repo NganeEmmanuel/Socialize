@@ -16,5 +16,8 @@ public class PostDTO {
     private String mediaName;
     private Integer totalReactions;
     private Integer totalComments;
+
+    public void setUserId(Long id) {
+    }
     // Additional fields as needed
 }
