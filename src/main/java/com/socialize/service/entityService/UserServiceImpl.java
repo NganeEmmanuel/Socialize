@@ -8,7 +8,9 @@ import com.socialize.service.mapperService.UserMapperService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -75,5 +77,19 @@ public class UserServiceImpl implements UserService {
 //        List<User> users = userRepository.findAll();
 //        return userMapper.mapToDTOList(users);
         return null;
+    }
+    @Override
+    public List<UserDTO> getFollowingUsers(Long userId, int start, int stop) {
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("user not found"));
+        List<User> followingUsers = user.getFollowing().stream().toList();
+        Collections.shuffle(followingUsers);
+
+        if(start < 0) start = 0;
+        if(stop >
+        followingUsers.size()) stop = followingUsers.size();
+
+        return followingUsers.subList(start, stop).stream().map(userMapper::mapToDTO).collect(Collectors.toList());
+
+
     }
 }
