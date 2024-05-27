@@ -16,4 +16,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @author Nde Dilan
      */
     List<Post> findByUserIn(List<User> followingList, Pageable pageable);
+
+
 }

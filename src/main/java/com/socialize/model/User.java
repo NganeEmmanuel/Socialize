@@ -51,7 +51,7 @@ public class User implements UserDetails {
 
     @ManyToMany
     @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "follower_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            inverseJoinColumns = @JoinColumn(name = "id")
     )
 
     private Set<User> followers = new HashSet<>();

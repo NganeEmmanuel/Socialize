@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserById(Long userId) {
+    public UserDTO getUserById(Long id) {
         User user;
         try {
-            user = userRepository.findById(userId)
+            user = userRepository.findById(id)
                     .orElseThrow(ChangeSetPersister.NotFoundException::new);
         } catch (ChangeSetPersister.NotFoundException e) {
             throw new RuntimeException(e);

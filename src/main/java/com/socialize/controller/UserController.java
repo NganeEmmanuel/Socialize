@@ -14,15 +14,5 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
-    @Autowired
-    private FeedService feedService;
 
-    @GetMapping("/feed")
-    public ResponseEntity<List<PostDTO>> getFeed(
-            @RequestParam Long userId,
-            @RequestParam int start,
-            @RequestParam int stop) {
-        List<PostDTO> feed = feedService.getFeed(userId, start, stop);
-        return ResponseEntity.ok(feed);
-    }
 }
