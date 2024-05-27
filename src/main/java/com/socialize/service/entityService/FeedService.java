@@ -27,13 +27,13 @@ public class FeedService {
 
     /**
      * Fetches posts from users in the following list
-     * @param userId
+     * @param id
      * @param start
      * @param stop
      * @return a list of posts DTOs
      */
     public List<PostDTO> getFeed(Long id, int start, int stop) {
-        Set<User> following = userRepository.findFollowingByUserId(id);
+        Set<User> following = userRepository.findFollowingById(id);
 
         List<User> followingList;
         if (following.isEmpty()) {
