@@ -33,12 +33,12 @@ const App = () => {
         image7,
         image8,
         image9,
-        image10,
+/**     image10,
         image11,
         image12,
         image13,
         image14,
-        image15,
+        image15, */
     ];
 
     useEffect(() => {
