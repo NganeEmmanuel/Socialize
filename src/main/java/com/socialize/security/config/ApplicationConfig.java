@@ -23,16 +23,10 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        UserDetails user = User.withUsername("user")
-                .password(encoder().encode("userPass"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+        return username -> userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
     }
 
     @Bean

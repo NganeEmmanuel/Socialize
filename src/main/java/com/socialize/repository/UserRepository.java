@@ -11,6 +11,5 @@ import java.util.Set;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u.following FROM User u WHERE u.id = :userId")
-    Set<User> findFollowingByUserId(@Param("userId") Long userId);
+    Optional<User> findByUsername(String email);
 }
