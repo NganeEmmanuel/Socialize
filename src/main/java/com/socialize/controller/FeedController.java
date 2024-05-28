@@ -22,7 +22,6 @@ public class FeedController {
             @RequestParam Long id,
             @RequestParam int start,
             @RequestParam int stop) {
-        System.out.println("FeedController.getFeed" + "start "+ start + "stop "+ stop + "id "+ id);
         List<PostDTO> feed = feedService.getFeed(id, start, stop);
         return ResponseEntity.ok(feed);
     }

@@ -19,6 +19,15 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService{
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
     private final UserRepository userRepository ;
+
+    /**
+     *  Retrieve a UserDTO matching the provided username
+     * @param username
+     * @param start
+     * @param stop
+     * @return
+     * @throws NoMatchingUserFoundException if no user is found with a name or username like what's provided
+     */
     @Override
     public List<UserDTO> getUserDTOByUsername(String username,int start,int stop) throws NoMatchingUserFoundException {
         try {
@@ -41,6 +50,12 @@ public class SearchServiceImpl implements SearchService{
         }
 
     }
+
+    /**
+     *
+     * @param user
+     * @return UserDTO object
+     */
     private UserDTO convertToDto(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());

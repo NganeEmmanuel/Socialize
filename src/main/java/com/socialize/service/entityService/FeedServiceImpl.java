@@ -56,7 +56,7 @@ public class FeedServiceImpl implements FeedService {
 
     /**
      * Fetches the top 10 users
-     * @return a list of users
+     * @return a list of default users
      */
     public List<User> getDefaultUsers() {
         return userRepository.findAll(PageRequest.of(0, 10)).getContent(); // Example: top 10 users
