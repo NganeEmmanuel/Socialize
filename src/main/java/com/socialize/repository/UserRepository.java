@@ -10,9 +10,8 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String email);
+
     @Query("SELECT u.following FROM User u WHERE u.id = :userId")
     List<User> findFollowingByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT u.followers FROM User u WHERE u.id = :userId")
-    List<User> findFollowersByUserId(@Param("userId") Long userId);
 }
