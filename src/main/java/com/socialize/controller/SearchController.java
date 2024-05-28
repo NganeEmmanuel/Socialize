@@ -23,9 +23,10 @@ public class SearchController {
 
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserDTO>> getUserByUsernameOrName(@RequestParam String keyword) {
+    public ResponseEntity<List<UserDTO>> getUserByUsernameOrName(@RequestParam String keyword, @RequestParam int start,
+                                                                 @RequestParam int stop) {
 
-        List<UserDTO> feed = searchService.getUserDTOByUsername(keyword);
+        List<UserDTO> feed = searchService.getUserDTOByUsername(keyword,start,stop);
 
         return ResponseEntity.ok(feed);
     }
