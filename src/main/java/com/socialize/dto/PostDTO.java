@@ -16,5 +16,6 @@ public class PostDTO {
     private String mediaName;
     private Integer totalReactions;
     private Integer totalComments;
+
     // Additional fields as needed
 }
