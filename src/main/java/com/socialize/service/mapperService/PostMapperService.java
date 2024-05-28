@@ -2,7 +2,9 @@ package com.socialize.service.mapperService;
 
 import com.socialize.dto.PostDTO;
 import com.socialize.model.Post;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostMapperService implements MapperService<Post, PostDTO> {
 
     @Override

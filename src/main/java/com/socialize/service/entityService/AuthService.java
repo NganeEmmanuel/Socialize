@@ -3,8 +3,7 @@ package com.socialize.service.entityService;
 import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
 import com.socialize.auth.RegisterRequest;
-import com.socialize.dto.UserDTO;
-import com.socialize.exception.AuthException;
+import com.socialize.exception.exceptions.AuthException;
 
 public interface AuthService {
     /**

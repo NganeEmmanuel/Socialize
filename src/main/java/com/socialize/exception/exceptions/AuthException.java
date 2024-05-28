@@ -1,4 +1,4 @@
-package com.socialize.exception;
+package com.socialize.exception.exceptions;
 
 public class AuthException extends RuntimeException {
     public AuthException(String message) {
