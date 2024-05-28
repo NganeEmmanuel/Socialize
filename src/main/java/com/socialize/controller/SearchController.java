@@ -6,7 +6,6 @@ import com.socialize.service.entityService.SearchServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
-    private SearchServiceImpl searchService;
+    private static final Logger logger = LoggerFactory.getLogger(SearchController.class);
+    private final SearchServiceImpl searchService;
 
     /**
      * Get a list of users by their username or name

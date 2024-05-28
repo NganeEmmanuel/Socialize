@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService{
-    private final UserMapperService userMapperService;
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
+    private final UserMapperService userMapperService;
     private final UserRepository userRepository ;
 
     /**
