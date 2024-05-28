@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-//api/v1/user/feed?id={userId}&start={start}&stop={stop}
+//
+
 @RequestMapping("/api/v1/user")
 public class FeedController {
     @Autowired
