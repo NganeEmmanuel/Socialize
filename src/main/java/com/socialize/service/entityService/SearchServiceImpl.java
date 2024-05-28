@@ -4,6 +4,7 @@ import com.socialize.dto.UserDTO;
 import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
+import com.socialize.service.mapperService.UserMapperService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,15 +18,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService{
+    private final UserMapperService userMapperService;
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
     private final UserRepository userRepository ;
 
     /**
      *  Retrieve a UserDTO matching the provided username
-     * @param username
-     * @param start
-     * @param stop
-     * @return
+     * @param username the username to search for
+     * @param start the start index of the search
+     * @param stop the stop index of the search
+     * @return a list of UserDTOs matching the provided username
      * @throws NoMatchingUserFoundException if no user is found with a name or username like what's provided
      */
     @Override
@@ -53,19 +55,11 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      *
-     * @param user
+     * @param user the user we want to convert to a UserDTO
      * @return UserDTO object
      */
     private UserDTO convertToDto(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setName(user.getName());
-        userDTO.setAuthority(user.getAuthority());
-        userDTO.setMediaMimeType(user.getMediaMimeType());
-        userDTO.setProfilePicture(user.getProfilePicture());
-        userDTO.setEmail(user.getEmail());
-        return userDTO;
+        return userMapperService.mapToDTO(user);
     }
 
 }

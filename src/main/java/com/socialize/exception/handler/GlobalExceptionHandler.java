@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
      * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
      * @return A ResponseEntity containing the error message and HTTP status.
      */
-    @ExceptionHandler(PostNotFoundException.class)
+    @ExceptionHandler(NoMatchingUserFoundException.class)
     public ResponseEntity<String> handleNoMatchingUserFoundException(NoMatchingUserFoundException ex, WebRequest request) {
         logger.error("No matching user found while looking through search keyword: {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

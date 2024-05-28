@@ -6,6 +6,8 @@ import com.socialize.model.Post;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
 import com.socialize.repository.PostRepository;
+import com.socialize.service.mapperService.PostMapperService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,13 +19,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @Service
+@RequiredArgsConstructor
 public class FeedServiceImpl implements FeedService {
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private PostRepository postRepository;
+
+    private final PostMapperService postMapperService ;
+
+    /// TODO: Add exception handlers to this method...
 
     /**
      * Fetches posts from users in the following list
@@ -63,10 +69,6 @@ public class FeedServiceImpl implements FeedService {
     }
 
     public PostDTO convertToDto(Post post) {
-        PostDTO postDTO = new PostDTO();
-        postDTO.setId(post.getId());
-        postDTO.setUserId(post.getUser().getId());
-        postDTO.setContent(post.getContent());
-        return postDTO;
+        return postMapperService.mapToDTO(post);
     }
 }

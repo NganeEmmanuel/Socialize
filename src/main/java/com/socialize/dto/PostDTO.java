@@ -17,7 +17,5 @@ public class PostDTO {
     private Integer totalReactions;
     private Integer totalComments;
 
-    public void setUserId(Long id) {
-    }
     // Additional fields as needed
 }

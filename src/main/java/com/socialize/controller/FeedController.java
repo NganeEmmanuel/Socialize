@@ -2,6 +2,7 @@ package com.socialize.controller;
 
 import com.socialize.dto.PostDTO;
 import com.socialize.service.entityService.FeedServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 public class FeedController {
-    @Autowired
     private FeedServiceImpl feedService;
 
     @GetMapping("/feed")
