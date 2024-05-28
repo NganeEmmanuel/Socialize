@@ -1,7 +1,10 @@
 package com.socialize.controller;
 
+
 import com.socialize.dto.PostDTO;
-import com.socialize.service.entityService.FeedServiceImpl;
+import com.socialize.dto.UserDTO;
+import com.socialize.service.entityService.SearchService;
+import com.socialize.service.entityService.SearchServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
-public class FeedController {
-    @Autowired
-    private FeedServiceImpl feedService;
+@RequestMapping("/api/v1/admin/")
+public class SearchController {
 
-    @GetMapping("/feed")
-    public ResponseEntity<List<PostDTO>> getFeed(
-            @RequestParam Long id,
-            @RequestParam int start,
-            @RequestParam int stop) {
-        System.out.println("FeedController.getFeed" + "start "+ start + "stop "+ stop + "id "+ id);
-        List<PostDTO> feed = feedService.getFeed(id, start, stop);
+    @Autowired
+    private SearchServiceImpl searchService;
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> getUserByUsernameOrName(@RequestParam String keyword) {
+
+        List<UserDTO> feed = searchService.getUserDTOByUsername(keyword);
+
         return ResponseEntity.ok(feed);
     }
-
 }
