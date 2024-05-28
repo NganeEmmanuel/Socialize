@@ -7,9 +7,12 @@ import com.socialize.service.entityService.UserService;
 import com.socialize.service.mapperService.UserMapperService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,17 +82,28 @@ public class UserServiceImpl implements UserService {
         return null;
     }
     @Override
+    @Transactional
     public List<UserDTO> getFollowingUsers(Long userId, int start, int stop) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("user not found"));
-        List<User> followingUsers = user.getFollowing().stream().toList();
-        Collections.shuffle(followingUsers);
+        List<User> followingUsers = userRepository.findFollowingByUserId(userId);
+        System.out.println("Following Users Size: " + followingUsers.size());
+        // Adjust start and stop indices
+        start = Math.max(0, start);
+        stop = Math.min(followingUsers.size(), stop);
+        start = Math.min(start, stop);
 
-        if(start < 0) start = 0;
-        if(stop >
-        followingUsers.size()) stop = followingUsers.size();
+        System.out.println("Adjusted Start: " + start + ", Stop: " + stop);
 
-        return followingUsers.subList(start, stop).stream().map(userMapper::mapToDTO).collect(Collectors.toList());
+        // Paginate and map to DTOs
+        List<UserDTO> result = followingUsers.subList(start, stop).stream()
+                .map(userMapper::mapToDTO)
+                .collect(Collectors.toList());
 
+        // Print the result to the console
+        System.out.println("Following Users:");
+        for (UserDTO userDTO : result) {
+            System.out.println(userDTO.toString());
+        }
 
+        return result;
     }
 }
