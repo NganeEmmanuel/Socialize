@@ -10,7 +10,8 @@ export async  function getHome(){
     try {
         const response = await api.get("/home")
         return response.data
-    }catch (error){
+    }catch (error){                
+
         throw new Error("Error getting the home page")
     }
 }
