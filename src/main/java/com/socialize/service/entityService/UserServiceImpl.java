@@ -1,6 +1,7 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
+import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
 import com.socialize.service.entityService.UserService;
@@ -84,26 +85,39 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserDTO> getFollowingUsers(Long userId, int start, int stop) {
-        List<User> followingUsers = userRepository.findFollowingByUserId(userId);
-        System.out.println("Following Users Size: " + followingUsers.size());
-        // Adjust start and stop indices
-        start = Math.max(0, start);
-        stop = Math.min(followingUsers.size(), stop);
-        start = Math.min(start, stop);
+        try {
+            // Try to find the user and their following users
+            List<User> followingUsers = userRepository.findFollowingByUserId(userId);
+            System.out.println("Following Users Size: " + followingUsers.size());
 
-        System.out.println("Adjusted Start: " + start + ", Stop: " + stop);
+            // Adjust start and stop indices
+            start = Math.max(0, start);
+            stop = Math.min(followingUsers.size(), stop);
+            start = Math.min(start, stop);
 
-        // Paginate and map to DTOs
-        List<UserDTO> result = followingUsers.subList(start, stop).stream()
-                .map(userMapper::mapToDTO)
-                .collect(Collectors.toList());
+            System.out.println("Adjusted Start: " + start + ", Stop: " + stop);
 
-        // Print the result to the console
-        System.out.println("Following Users:");
-        for (UserDTO userDTO : result) {
-            System.out.println(userDTO.toString());
+            // Paginate and map to DTOs
+            List<UserDTO> result = followingUsers.subList(start, stop).stream()
+                    .map(userMapper::mapToDTO)
+                    .collect(Collectors.toList());
+
+            // Print the result to the console
+            System.out.println("Following Users:");
+            for (UserDTO userDTO : result) {
+                System.out.println(userDTO.toString());
+            }
+
+            return result;
+
+        } catch (UserNotFoundException ex) {
+            // Handle case where the user is not found
+            System.out.println("User not found: " + ex.getMessage());
+            return Collections.emptyList();
+        } catch (Exception ex) {
+            // Handle any other unexpected exceptions
+            System.out.println("An unexpected error occurred: " + ex.getMessage());
+            return Collections.emptyList();
         }
-
-        return result;
     }
 }
