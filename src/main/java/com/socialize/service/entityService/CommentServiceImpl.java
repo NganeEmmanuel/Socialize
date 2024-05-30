@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService{
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    private  CommentMapperService commentMapperService;
+    private final CommentMapperService commentMapperService;
 
     /**
      * Returns a list of CommentDTO object based on a specific post
@@ -41,15 +41,17 @@ public class CommentServiceImpl implements CommentService{
         try {
             logger.info("API call to fetch comments for post with ID: {}", postId);
             Post post = postRepository.findPostById(postId);
-            Pageable pageable = PageRequest.of(start, stop - start);
-            List<Comment> comments = commentRepository.findByPost(post,pageable);
 
-           //Throw new error if comments.IsEmpty() == true
-            if(comments.isEmpty()){
-            throw new CommentNotFoundException(postId);
-            }
-            // Convert to DTOs
-            return comments.stream().map(this::convertToDto).collect(Collectors.toList());
+                Pageable pageable = PageRequest.of(start, stop - start);
+                List<Comment> comments = commentRepository.findByPost(post,pageable);
+
+                //Throw new error if comments.IsEmpty() == true
+                if(comments.isEmpty()){
+                    throw new CommentNotFoundException(postId);
+                }
+                // Convert to DTOs
+                return comments.stream().map(this::convertToDto).collect(Collectors.toList());
+
 
         } catch (CommentNotFoundException ex) {
             logger.error("Error fetching the comments for post with ID: {}", postId, ex);
