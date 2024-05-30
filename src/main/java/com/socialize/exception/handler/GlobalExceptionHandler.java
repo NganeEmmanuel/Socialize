@@ -1,6 +1,7 @@
 package com.socialize.exception.handler;
 
 
+import com.socialize.exception.exceptions.CommentNotFoundException;
 import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.exception.exceptions.PostNotFoundException;
 import org.slf4j.Logger;
@@ -40,6 +41,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoMatchingUserFoundException.class)
     public ResponseEntity<String> handleNoMatchingUserFoundException(NoMatchingUserFoundException ex, WebRequest request) {
         logger.error("No matching user found while looking through search keyword: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles PostNotFoundException and returns a meaningful response.
+     *
+     * @param ex The PostNotFoundException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<String> handleCommentNotFoundException(CommentNotFoundException ex, WebRequest request) {
+        logger.error("No matching comments found while looking for your post {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
