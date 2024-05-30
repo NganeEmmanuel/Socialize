@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+
     "@babel/plugin-transform-react-jsx": "^7.24.6",
     "@babel/preset-react": "^7.24.6",
     "@emotion/react": "^11.11.4",
@@ -28,7 +29,13 @@
     "vite": "^5.2.12",
     "vite-plugin-env-compatible": "^2.0.1",
     "vite-plugin-svgr": "^4.2.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "prop-types": "^15.8.1",
+    "react-bootstrap": "^2.10.2",
+    "styled-components": "^6.1.11"
+
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
