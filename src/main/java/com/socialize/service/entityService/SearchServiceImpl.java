@@ -25,6 +25,7 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      *  Retrieve a UserDTO matching the provided username
+     *
      * @param username the username to search for
      * @param start the start index of the search
      * @param stop the stop index of the search
