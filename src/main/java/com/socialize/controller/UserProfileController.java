@@ -19,6 +19,7 @@ public class UserProfileController {
         this.userProfileService = userProfileService;
     }
 
+
     @GetMapping
     public ResponseEntity<UserDTO> getUserProfile(@RequestParam("userId") Long userId) {
         UserDTO userDTO = userProfileService.getUserProfile(userId);
