@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE (u.username LIKE CONCAT('%', LOWER(:username), '%') OR u.name LIKE CONCAT('%', LOWER(:username), '%'))")
     List<User> findByUsernameContainingOrNameContaining(String username, Pageable pageable);
+
+    @Query("SELECT u.following FROM User u WHERE u.id = :userId")
+    List<User> findFollowingByUserId(@Param("userId") Long userId);
 }
