@@ -1,5 +1,6 @@
 package com.socialize.repository;
 
+import com.socialize.exception.exceptions.PostNotFoundException;
 import com.socialize.model.Post;
 import com.socialize.model.User;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      */
     List<Post> findByUserIn(List<User> followingList, Pageable pageable);
 
+    Post findPostById(Long postId) throws PostNotFoundException;
 
 }
