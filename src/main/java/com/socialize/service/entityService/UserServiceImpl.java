@@ -4,16 +4,13 @@ import com.socialize.dto.UserDTO;
 import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
-import com.socialize.service.entityService.UserService;
 import com.socialize.service.mapperService.UserMapperService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,14 +85,11 @@ public class UserServiceImpl implements UserService {
         try {
             // Try to find the user and their following users
             List<User> followingUsers = userRepository.findFollowingByUserId(userId);
-            System.out.println("Following Users Size: " + followingUsers.size());
 
             // Adjust start and stop indices
             start = Math.max(0, start);
             stop = Math.min(followingUsers.size(), stop);
             start = Math.min(start, stop);
-
-            System.out.println("Adjusted Start: " + start + ", Stop: " + stop);
 
             // Paginate and map to DTOs
             List<UserDTO> result = followingUsers.subList(start, stop).stream()
@@ -103,7 +97,6 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toList());
 
             // Print the result to the console
-            System.out.println("Following Users:");
             for (UserDTO userDTO : result) {
                 System.out.println(userDTO.toString());
             }
@@ -111,12 +104,8 @@ public class UserServiceImpl implements UserService {
             return result;
 
         } catch (UserNotFoundException ex) {
-            // Handle case where the user is not found
-            System.out.println("User not found: " + ex.getMessage());
-            return Collections.emptyList();
+            throw ex;
         } catch (Exception ex) {
-            // Handle any other unexpected exceptions
-            System.out.println("An unexpected error occurred: " + ex.getMessage());
             return Collections.emptyList();
         }
     }
