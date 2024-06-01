@@ -7,6 +7,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserMapperService implements MapperService<User, UserDTO> {
 
+    public UserDTO toDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        user.setId(userDTO.getId());
+        user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setAuthority(userDTO.getAuthority());
+        user.setProfilePicture(userDTO.getProfilePicture());
+        user.setMediaMimeType(userDTO.getMediaMimeType());
+        return userDTO;
+    }
+
+    public User fromDTO(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setAuthority(userDTO.getAuthority());
+        user.setProfilePicture(userDTO.getProfilePicture());
+        user.setMediaMimeType(userDTO.getMediaMimeType());
+        return user;
+    }
+
     @Override
     public User mapToEntity(UserDTO userDTO) {
         User user = new User();
