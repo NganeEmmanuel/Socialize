@@ -50,5 +50,24 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @GetMapping("/child")
+    public ResponseEntity<List<CommentDTO>> getChildComments(
+            @RequestParam Long postId,
+            @RequestParam Integer parentCommentId,
+            @RequestParam int start,
+            @RequestParam int stop) {
+
+        try {
+            logger.info("API call to fetch comments for comment with ID: {} and post with id: {}", parentCommentId,postId);
+            List<CommentDTO> commentList = commentService.getChildComment(postId,parentCommentId, start, stop);
+            return ResponseEntity.ok(commentList);
+        } catch (CommentNotFoundException ex) {
+            logger.error("Error fetching the comments for post with ID: {} and for comment with ID: {} ", postId,parentCommentId, ex);
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }catch (Exception ex){
+            logger.error("An unexpected error occurred while looking for parent comments with the post having the id: {} and his parent having for id: {}", postId,parentCommentId, ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
 }

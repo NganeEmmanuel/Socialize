@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CommentService {
 
-    public List<CommentDTO> getComment(Long postId, int start, int stop) ;
+    List<CommentDTO> getComment(Long postId, int start, int stop) ;
+    List<CommentDTO> getChildComment(Long postId, Integer parentCommentId, int start, int stop) ;
 
 }

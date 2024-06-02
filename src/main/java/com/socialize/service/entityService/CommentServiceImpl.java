@@ -2,6 +2,7 @@ package com.socialize.service.entityService;
 
 import com.socialize.dto.CommentDTO;
 import com.socialize.exception.exceptions.CommentNotFoundException;
+import com.socialize.exception.exceptions.NoChildCommentFoundException;
 import com.socialize.model.Comment;
 import com.socialize.model.Post;
 import com.socialize.repository.CommentRepository;
@@ -61,6 +62,32 @@ public class CommentServiceImpl implements CommentService{
             throw new RuntimeException("An unexpected error occurred", ex);
         }
         }
+
+    @Override
+    public List<CommentDTO> getChildComment(Long postId, Integer parentCommentId, int start, int stop) {
+        try {
+            logger.info("API call to fetch comments for post with ID: {} and parent comment with id: {}", postId,parentCommentId);
+            Post post = postRepository.findPostById(postId);
+
+            Pageable pageable = PageRequest.of(start, stop - start);
+            List<Comment> comments = commentRepository.findByPostAndParentCommentId(post,parentCommentId,pageable);
+
+            //Throw new error if comments.IsEmpty() == true
+            if(comments.isEmpty()){
+                throw new NoChildCommentFoundException(postId,parentCommentId);
+            }
+            // Convert to DTOs
+            return comments.stream().map(this::convertToDto).collect(Collectors.toList());
+
+
+        } catch (NoChildCommentFoundException ex) {
+            logger.error("Error fetching the child comments for post with ID: {} and parent comment with id: {} ", postId,parentCommentId, ex);
+            throw ex;
+        }catch (Exception ex) {
+            logger.error("An unexpected error occurred while looking for comments with the post having the id: {}", postId, ex);
+            throw new RuntimeException("An unexpected error occurred", ex);
+        }
+    }
 
     public CommentDTO convertToDto(Comment post) {
         return commentMapperService.mapToDTO(post);
