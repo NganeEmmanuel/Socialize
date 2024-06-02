@@ -1,34 +1,25 @@
 package com.socialize.service.entityService;
-import com.socialize.controller.UserProfileController;
+
 import com.socialize.dto.UserDTO;
+import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.socialize.service.mapperService.UserMapperService;
 import org.springframework.stereotype.Service;
+
 @Service
-public abstract class UserProfileService {
-    @Autowired
-    private UserRepository userRepository;
+public class UserProfileService {
+    private final UserRepository userRepository;
+    private final UserMapperService userMapperService;
 
-    public UserDTO getUserById(Long userId) {
+    public UserProfileService(UserRepository userRepository, UserMapperService userMapperService) {
+        this.userRepository = userRepository;
+        this.userMapperService = userMapperService;
+    }
+
+    public UserDTO getUserProfile(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return convertToDTO(user);
+                .orElseThrow(() -> new NoMatchingUserFoundException("User not found with ID: " + userId));
+        return userMapperService.toDTO(user);
     }
-
-    private UserDTO convertToDTO(User user) {
-        // Convert the User entity to a UserDTO
-        // You can use a library like ModelMapper or write the conversion manually
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setAuthority(user.getAuthority());
-        userDTO.setProfilePicture(user.getProfilePicture());
-        userDTO.setMediaMimeType(user.getMediaMimeType());
-        return userDTO;
-    }
-
-    public abstract UserDTO getUserProfile(Long userId);
 }

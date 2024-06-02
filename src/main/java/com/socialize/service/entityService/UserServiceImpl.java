@@ -76,4 +76,9 @@ public class UserServiceImpl implements UserService {
 //        return userMapper.mapToDTOList(users);
         return null;
     }
+
+    @Override
+    public UserDTO getUserProfile(Long userId) {
+        return null;
+    }
 }
