@@ -18,6 +18,6 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
-    UserDTO getUserDTOById(Long userId) throws Exception;
+    UserDTO getUserDTOById(Long userId) throws Exception; //todo Carole please extract this method into its own service interface which you will extend in its service class. work with bryan and dilan
 
 }
