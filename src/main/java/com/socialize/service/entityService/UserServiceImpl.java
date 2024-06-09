@@ -1,28 +1,36 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
+import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
 import com.socialize.service.mapperService.UserMapperService;
+import com.socialize.utils.UpdateUtils;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapperService userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapperService userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public UserDTO getUserById(Long userId) {
@@ -40,26 +48,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.mapToEntity(userDTO);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User savedUser = userRepository.save(user);
         return userMapper.mapToDTO(savedUser);
     }
 
+
     @Override
     public UserDTO updateUser(Long userId, UserDTO userDTO) {
-//        User existingUser = null;
-//        try {
-//            existingUser = userRepository.findById(userId)
-//                    .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
-//        } catch (ChangeSetPersister.NotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        userMapper.updateEntityFromDTO(userDTO, existingUser);
-//        User updatedUser = userRepository.save(existingUser);
-//        return userMapper.mapToDTO(updatedUser);
-        return null;
-    }
+        try {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException(userDTO.getId()));
+            UpdateUtils.copyNonNullProperties(userDTO, user);
+            user.setLastUpdated(new Date());
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            User updatedUser = userRepository.save(user);
+            return userMapper.mapToDTO(updatedUser);
+        } catch (Exception e) {
+            logger.info("An error occurred while updating the user with ID: {}", userId);
+            throw new RuntimeException(e);
+        }
 
+
+    }
     @Override
     public void deleteUser(Long userId) {
         User user;
@@ -109,4 +120,6 @@ public class UserServiceImpl implements UserService {
             return Collections.emptyList();
         }
     }
+
+
 }

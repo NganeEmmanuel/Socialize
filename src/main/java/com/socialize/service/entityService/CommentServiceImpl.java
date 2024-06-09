@@ -41,7 +41,6 @@ public class CommentServiceImpl implements CommentService{
     public List<CommentDTO> getComment(Long postId, int start, int stop) throws CommentNotFoundException {
 
         try {
-            logger.info("API call to fetch comments for post with ID: {}", postId);
             Post post = postRepository.findPostById(postId)
                     .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
 
@@ -50,7 +49,6 @@ public class CommentServiceImpl implements CommentService{
                 List<Comment> comments = commentRepository.findByPost(post,pageable)
                         .orElseThrow(() -> new CommentNotFoundException(postId));
 
-                // Convert to DTOs
                 return comments.stream().map(this::convertToDto).collect(Collectors.toList());
 
 
@@ -69,15 +67,11 @@ public class CommentServiceImpl implements CommentService{
             Post post = postRepository.findPostById(postId)
                     .orElseThrow(() -> new PostNotFoundException(postId));
 
-            Pageable pageable = PageRequest.of(1, 4);
+            Pageable pageable = PageRequest.of(start, stop-start);
             List<Comment> comments = commentRepository.findCommentsByPostAndParentCommentId(post,parentCommentId,pageable)
                     .orElseThrow(() -> new NoChildCommentFoundException(postId,parentCommentId));
 
-            System.out.println("Comments: " + comments);
-            // Convert to DTOs
             return comments.stream().map(this::convertToDto).collect(Collectors.toList());
-
-
         } catch (NoChildCommentFoundException ex) {
             logger.error("Error fetching the child comments for post with ID: {} and parent comment with id: {} ", postId,parentCommentId, ex);
             throw ex;

@@ -25,7 +25,7 @@ public class SecurityConfig  {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**","/api/v1/comment/**") //todo please when you add your endpoints here for testing, please remove them and allow just the default before you push and pull request
+                        .requestMatchers("/api/v1/auth/**") //todo please when you add your endpoints here for testing, please remove them and allow just the default before you push and pull request
                         .permitAll()
                         .anyRequest().authenticated()
                 )
