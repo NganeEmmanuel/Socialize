@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/user/profile")
-
+//todo Carole add RequireArgsConstructor annotation
 public class UserprofileController {
-    @Autowired
+    @Autowired // todo remove this after adding the annotation i specified above
+    //todo Carole remove commented code
     /*private UserService userService;
 
     @GetMapping
@@ -25,6 +26,7 @@ public class UserprofileController {
     }*/
     private final UserService userService;
 
+    //todo Carole this constructor is not needed. the annotaion i specified above automatically creates this for you. so remove
     public UserprofileController(UserService userService) {
         this.userService = userService;
     }
@@ -36,6 +38,8 @@ public class UserprofileController {
     }
 }
 
+
+//Todo Carole please remove everything from here below they are useless
 // UserService.java
 public interface UserService {
     UserDTO getUserProfile(Long userId);
