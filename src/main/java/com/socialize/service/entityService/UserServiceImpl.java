@@ -81,19 +81,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    //Todo @Carole please extract this code into its own class [UserProfileServiceImpl].
-    //Todo @Carole make sure to create a custome exception [UserProfileNotFoundException] and throw that instead of the basic exception class. work with brian and dilan on it
-    @Override
-    public UserDTO getUserDTOById(Long userId) throws Exception {
-        User user;
-        try {
-             user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));  //todo throw custom exception
-           
-        } catch (Exception ex) {
-            logger.error("An unexpected error occurred while retrieving user with ID: {}", userId, ex);
-            throw ex;
-        }
 
-        return userMapper.mapToDTO(user);
-}
+
 }

@@ -3,6 +3,7 @@ package com.socialize.exception.handler;
 
 import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.exception.exceptions.PostNotFoundException;
+import com.socialize.exception.exceptions.ProfileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -55,5 +56,13 @@ public class GlobalExceptionHandler {
         logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
         return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex, WebRequest request) {
+        logger.error("Profile not found: {}", ex.getMessage(),ex);
+        return new ResponseEntity<>("An unexpected error occurred", HttpStatus.NOT_FOUND);
+    }
+
 }
 
