@@ -54,4 +54,5 @@ public class UserProfileServiceImpl implements UserService {
                 .map(userMapperService::toDTO)
                 .collect(Collectors.toList());
     }
+
 }

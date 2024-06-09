@@ -4,11 +4,13 @@ import com.socialize.enums.UserAuthority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
+ public class UserDTO {
     private Long id;
     private String name;
     private String username;
