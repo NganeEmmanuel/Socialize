@@ -99,4 +99,5 @@ public class PostServiceImpl implements PostService {
             throw new RuntimeException("An unexpected error occurred", ex);
         }
     }
+
 }

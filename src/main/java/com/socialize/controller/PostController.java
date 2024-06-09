@@ -77,4 +77,5 @@ public class PostController {
             return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
