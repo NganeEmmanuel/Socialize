@@ -77,8 +77,6 @@ public class User implements UserDetails {
     protected void onCreate() {
         joinDate = new Date();
         lastUpdated = new Date();
-
-
     }
 
     @Override
@@ -106,6 +104,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-
-
