@@ -3,6 +3,7 @@ package com.socialize.controller;
 
 import com.socialize.dto.CommentDTO;
 import com.socialize.exception.exceptions.CommentNotFoundException;
+import com.socialize.exception.exceptions.NoChildCommentFoundException;
 import com.socialize.service.entityService.CommentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -61,7 +62,7 @@ public class CommentController {
             logger.info("API call to fetch comments for comment with ID: {} and post with id: {}", parentCommentId,postId);
             List<CommentDTO> commentList = commentService.getChildComment(postId,parentCommentId, start, stop);
             return ResponseEntity.ok(commentList);
-        } catch (CommentNotFoundException ex) {
+        } catch (NoChildCommentFoundException ex) {
             logger.error("Error fetching the comments for post with ID: {} and for comment with ID: {} ", postId,parentCommentId, ex);
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }catch (Exception ex){

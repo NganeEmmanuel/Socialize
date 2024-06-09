@@ -3,6 +3,7 @@ package com.socialize.service.entityService;
 import com.socialize.dto.CommentDTO;
 import com.socialize.exception.exceptions.CommentNotFoundException;
 import com.socialize.exception.exceptions.NoChildCommentFoundException;
+import com.socialize.exception.exceptions.PostNotFoundException;
 import com.socialize.model.Comment;
 import com.socialize.model.Post;
 import com.socialize.repository.CommentRepository;
@@ -41,15 +42,14 @@ public class CommentServiceImpl implements CommentService{
 
         try {
             logger.info("API call to fetch comments for post with ID: {}", postId);
-            Post post = postRepository.findPostById(postId);
+            Post post = postRepository.findPostById(postId)
+                    .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
+
 
                 Pageable pageable = PageRequest.of(start, stop - start);
-                List<Comment> comments = commentRepository.findByPost(post,pageable);
+                List<Comment> comments = commentRepository.findByPost(post,pageable)
+                        .orElseThrow(() -> new CommentNotFoundException(postId));
 
-                //Throw new error if comments.IsEmpty() == true
-                if(comments.isEmpty()){
-                    throw new CommentNotFoundException(postId);
-                }
                 // Convert to DTOs
                 return comments.stream().map(this::convertToDto).collect(Collectors.toList());
 
@@ -64,18 +64,16 @@ public class CommentServiceImpl implements CommentService{
         }
 
     @Override
-    public List<CommentDTO> getChildComment(Long postId, Integer parentCommentId, int start, int stop) {
+    public List<CommentDTO> getChildComment(Long postId, Integer parentCommentId, int start, int stop) throws NoChildCommentFoundException {
         try {
-            logger.info("API call to fetch comments for post with ID: {} and parent comment with id: {}", postId,parentCommentId);
-            Post post = postRepository.findPostById(postId);
+            Post post = postRepository.findPostById(postId)
+                    .orElseThrow(() -> new PostNotFoundException(postId));
 
-            Pageable pageable = PageRequest.of(start, stop - start);
-            List<Comment> comments = commentRepository.findByPostAndParentCommentId(post,parentCommentId,pageable);
+            Pageable pageable = PageRequest.of(1, 4);
+            List<Comment> comments = commentRepository.findCommentsByPostAndParentCommentId(post,parentCommentId,pageable)
+                    .orElseThrow(() -> new NoChildCommentFoundException(postId,parentCommentId));
 
-            //Throw new error if comments.IsEmpty() == true
-            if(comments.isEmpty()){
-                throw new NoChildCommentFoundException(postId,parentCommentId);
-            }
+            System.out.println("Comments: " + comments);
             // Convert to DTOs
             return comments.stream().map(this::convertToDto).collect(Collectors.toList());
 
