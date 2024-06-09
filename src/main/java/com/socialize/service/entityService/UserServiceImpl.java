@@ -4,7 +4,10 @@ import com.socialize.dto.UserDTO;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
 import com.socialize.service.entityService.UserService;
+import com.socialize.service.mapperService.MapperService;
 import com.socialize.service.mapperService.UserMapperService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserMapperService userMapper;
 
     public UserServiceImpl(UserRepository userRepository, UserMapperService userMapper) {
@@ -76,9 +80,17 @@ public class UserServiceImpl implements UserService {
 //        return userMapper.mapToDTOList(users);
         return null;
     }
-
     @Override
-    public UserDTO getUserProfile(Long userId) {
-        return null;
-    }
+    public UserDTO getUserDTOById(Long userId) throws Exception {
+        User user;
+        try {
+             user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+           
+        } catch (Exception ex) {
+            logger.error("An unexpected error occurred while retrieving user with ID: {}", userId, ex);
+            throw ex;
+        }
+
+        return userMapper.mapToDTO(user);
+}
 }
