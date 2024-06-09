@@ -3,14 +3,9 @@ package com.socialize.service.mapperService;
 import com.socialize.dto.UserDTO;
 import com.socialize.model.User;
 import org.springframework.stereotype.Service;
-import org.springframework.stereotype.Component;
-
 
 @Service
 public class UserMapperService implements MapperService<User, UserDTO> {
-
-
-
 
     @Override
     public User mapToEntity(UserDTO userDTO) {
