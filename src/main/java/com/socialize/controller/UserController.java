@@ -34,10 +34,9 @@ public class UserController {
     }
 
     /**
-     * - ⁠/api/v1/user/edit/profile (receives user's ID, and other related user information. Please check user entity) and updates th ! User with the id specified. Returns a success if information was updated, or the appropriate error.  Make use of the service and repository classes that already exist. Use DTO classes where needed. Overall make sure your code is modular, secure, and decoupled. Use Gpt as your on the go senior dev🤗
-     * - time: 7hrs
-     * - assigned to: @Dilan
-     * - cc: @Carole
+     * ret
+     * @param userDTO
+     * @return
      */
     @PutMapping("/edit/profile")
     public ResponseEntity<UserDTO> editProfile(@RequestBody UserDTO userDTO){
