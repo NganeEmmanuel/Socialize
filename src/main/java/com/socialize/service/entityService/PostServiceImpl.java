@@ -99,4 +99,16 @@ public class PostServiceImpl implements PostService {
             throw new RuntimeException("An unexpected error occurred", ex);
         }
     }
+
+    @Override
+    public PostDTO createPost(PostDTO postDTO) {
+        try{
+           Post post = postMapperService.mapToEntity(postDTO);
+           Post savedPost = postRepository.save(post);
+           return postMapperService.mapToDTO(savedPost);
+        }catch(Exception ex){
+            logger.error("error creating a post", ex);
+            throw  new RuntimeException("an error occurred while creating  a post", ex);
+        }
+    }
 }
