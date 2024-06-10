@@ -77,5 +77,14 @@ public class PostController {
             return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PostMapping("/new")
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+        try{
+           PostDTO createdPost = postService.createPost(postDTO);
+           return new ResponseEntity<>(createdPost, HttpStatus.OK);
+        }catch(Exception ex){
+            logger.error("error creating new post", ex);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

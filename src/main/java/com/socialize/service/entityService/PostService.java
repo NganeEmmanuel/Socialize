@@ -12,5 +12,7 @@ public interface PostService {
     PostDTO getPostDTOById(Long postId) throws PostNotFoundException;
 
     void updatePost(Long postId, PostDTO postDTO) throws PostNotFoundException;
+
+    PostDTO createPost(PostDTO postDTO);
 }
 
