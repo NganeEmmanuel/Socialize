@@ -30,6 +30,7 @@ public class PostServiceImpl implements PostService {
         try {
             Post post = getPostById(id);
             postRepository.delete(post);
+            //deletes post from database
             logger.info("Post with ID: {} deleted successfully", id);
         } catch (PostNotFoundException ex) {
             logger.error("Post not found with ID: {}", id, ex);
