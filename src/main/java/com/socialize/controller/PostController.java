@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/vi/post")
+@RequestMapping("/api/v1/post")
 @RequiredArgsConstructor
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -53,6 +53,38 @@ public class PostController {
         } catch (Exception ex) {
             logger.error("An unexpected error occurred while retrieving post with ID: {}", id, ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Updates a post by its ID.
+     *
+     * @param id      The ID of the post to update.
+     * @param postDTO The updated post data.
+     * @return A ResponseEntity containing a success message and HTTP status.
+     */
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody PostDTO postDTO) {
+        try {
+            logger.info("API call to update post with ID: {}", id);
+            postService.updatePost(id, postDTO);
+            return new ResponseEntity<>("Post updated successfully", HttpStatus.OK);
+        } catch (PostNotFoundException ex) {
+            logger.error("Error updating post with ID: {}", id, ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            logger.error("An unexpected error occurred while updating post with ID: {}", id, ex);
+            return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/new")
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+        try{
+           PostDTO createdPost = postService.createPost(postDTO);
+           return new ResponseEntity<>(createdPost, HttpStatus.OK);
+        }catch(Exception ex){
+            logger.error("error creating new post", ex);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
