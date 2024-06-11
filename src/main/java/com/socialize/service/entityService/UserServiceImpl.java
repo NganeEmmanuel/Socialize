@@ -1,18 +1,15 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
-import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
 import com.socialize.service.mapperService.UserMapperService;
 import com.socialize.utils.UpdateUtils;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +23,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapperService userMapper;
 
@@ -48,7 +43,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.mapToEntity(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User savedUser = userRepository.save(user);
         return userMapper.mapToDTO(savedUser);
     }
@@ -59,9 +53,9 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException(userDTO.getId()));
-            UpdateUtils.copyNonNullProperties(userDTO, user);
+
+           UpdateUtils.copyNonNullProperties(userDTO, user);
             user.setLastUpdated(new Date());
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             User updatedUser = userRepository.save(user);
             return userMapper.mapToDTO(updatedUser);
         } catch (Exception e) {

@@ -14,7 +14,6 @@ public class UserMapperService implements MapperService<User, UserDTO> {
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
         user.setAuthority(userDTO.getAuthority());
         user.setProfilePicture(userDTO.getProfilePicture());
         user.setMediaMimeType(userDTO.getMediaMimeType());
