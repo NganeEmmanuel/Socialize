@@ -11,12 +11,4 @@ public class NoMatchingUserFoundException extends RuntimeException {
     public NoMatchingUserFoundException(String username) {
         super("No user found with username and/or name matching {} " + username);
     }
-
-    @SpringBootApplication
-    public class Application {
-        public static void main(String[] args) {
-            SpringApplication.run(Application.class, args);
-        }
-    }
-
 }

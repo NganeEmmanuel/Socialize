@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +48,10 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
         } catch (UserNotFoundException ex) {
             logger.error("Error fetching the user with ID: {}", userDTO.getId(), ex);
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
             logger.error("An error occurred while updating the user with ID: {}", userDTO.getId(), e);
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

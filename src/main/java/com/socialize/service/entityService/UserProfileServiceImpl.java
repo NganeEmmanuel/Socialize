@@ -26,13 +26,8 @@ public class UserProfileServiceImpl {
         } catch (ProfileNotFoundException e) {
             logger.error("User not found with ID: {}", userId, e);
             throw e;
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred while retrieving user with ID: {}", userId, e);
-            throw new RuntimeException("An error occurred while retrieving the user", e);
+
         }
     }
-
-
-
 
 }
