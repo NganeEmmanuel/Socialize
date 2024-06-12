@@ -76,12 +76,12 @@ public class UserController {
         try {
             logger.info("API call to delete the user with ID: {}", userId);
             userService.deleteUser(userId);
-            return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
         } catch (UserNotFoundException ex) {
             logger.error("Error deleting user with ID: {}", userId, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            logger.error("An error occurred while deactivating the user with ID: {}", userId, e);
+            logger.error("An error occurred while deleting the user with ID: {}", userId, e);
             return ResponseEntity.status(500).body(null);
         }
     }
