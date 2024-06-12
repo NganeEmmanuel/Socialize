@@ -13,6 +13,16 @@ target/
 .springBeans
 .sts4-cache
 
+### properties config ###
+.properties
+
+### application classes to not change ###
+src/main/java/com/socialize/auth
+src/main/java/com/socialize/security
+src/main/java/com/socialize/model
+src/main/java/com/socialize/dto
+src/main/java/com/socialize/enums
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
