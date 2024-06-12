@@ -22,4 +22,12 @@ public interface AuthService {
      * @throws AuthException if the user with the given email is not found or the password is invalid
      */
     AuthenticationResponse login(AuthenticationRequest request);
+
+    /**
+     * Authenticates a user and returns the user's data transfer object.
+     *
+     * @param token    token to be blacklisted
+     * @return a success status and message is successful
+     */
+    String logout(String token);
 }

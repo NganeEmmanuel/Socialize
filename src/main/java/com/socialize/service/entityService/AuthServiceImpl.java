@@ -4,7 +4,9 @@ import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
 import com.socialize.auth.RegisterRequest;
 import com.socialize.enums.UserAuthority;
+import com.socialize.model.TokenBlacklist;
 import com.socialize.model.User;
+import com.socialize.repository.TokenBlacklistRepository;
 import com.socialize.repository.UserRepository;
 import com.socialize.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final TokenBlacklistRepository tokenBlacklistRepository;
 
     @Override
     public AuthenticationResponse signup(RegisterRequest request) {
@@ -52,5 +55,15 @@ public class AuthServiceImpl implements AuthService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    @Override
+    public String logout(String token) {
+        var tokenBlacklist = TokenBlacklist.builder()
+                .token(token)
+                .expirationDate(jwtService.extractExpiration(token))
+                .build();
+        tokenBlacklistRepository.save(tokenBlacklist);
+        return "User logged out successfully.";
     }
 }
