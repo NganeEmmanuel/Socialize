@@ -1,6 +1,7 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
+import com.socialize.exception.exceptions.CommentNotFoundException;
 import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
@@ -24,6 +25,7 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      *  Retrieve a UserDTO matching the provided username
+     *
      * @param username the username to search for
      * @param start the start index of the search
      * @param stop the stop index of the search
@@ -40,7 +42,9 @@ public class SearchServiceImpl implements SearchService{
 
             Pageable pageable = PageRequest.of(start, stop - start);
             List<User> users = userRepository.findByUsernameContainingOrNameContaining(username_without_quotes,pageable);
-
+            if(users.isEmpty()){
+                throw new NoMatchingUserFoundException(username);
+            }
             // Convert User entities to UserDTOs
             return users.stream().map(this::convertToDto).collect(Collectors.toList());
         }catch (NoMatchingUserFoundException ex){

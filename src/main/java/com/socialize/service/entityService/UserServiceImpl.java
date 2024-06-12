@@ -4,10 +4,7 @@ import com.socialize.dto.UserDTO;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
 import com.socialize.service.entityService.UserService;
-import com.socialize.service.mapperService.MapperService;
 import com.socialize.service.mapperService.UserMapperService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +14,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserMapperService userMapper;
 
     public UserServiceImpl(UserRepository userRepository, UserMapperService userMapper) {
@@ -80,7 +76,4 @@ public class UserServiceImpl implements UserService {
 //        return userMapper.mapToDTOList(users);
         return null;
     }
-
-
-
 }

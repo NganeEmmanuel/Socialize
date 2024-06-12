@@ -30,6 +30,7 @@ public class PostServiceImpl implements PostService {
         try {
             Post post = getPostById(id);
             postRepository.delete(post);
+            //deletes post from database
             logger.info("Post with ID: {} deleted successfully", id);
         } catch (PostNotFoundException ex) {
             logger.error("Post not found with ID: {}", id, ex);
@@ -73,6 +74,42 @@ public class PostServiceImpl implements PostService {
         } catch (Exception ex) {
             logger.error("An unexpected error occurred while getting post with ID: {}", postId, ex);
             throw new RuntimeException("An unexpected error occurred", ex);
+        }
+    }
+
+    @Override
+    public void updatePost(Long postId, PostDTO postDTO) throws PostNotFoundException {
+        try {
+            Post existingPost = getPostById(postId);
+
+            // Update fields of the existing post with values from postDTO
+            existingPost.setContent(postDTO.getContent());
+            existingPost.setMediaFileContent(postDTO.getMediaContent());
+            existingPost.setMediaFileName(postDTO.getMediaName());
+            existingPost.setMediaMimeType(postDTO.getMediaType());
+            existingPost.setTotalReactions(postDTO.getTotalReactions());
+            existingPost.setTotalComments(postDTO.getTotalComments());
+
+            postRepository.save(existingPost);
+            logger.info("Post with ID: {} updated successfully", postId);
+        } catch (PostNotFoundException ex) {
+            logger.error("Post not found with ID: {}", postId, ex);
+            throw ex;
+        } catch (Exception ex) {
+            logger.error("An unexpected error occurred while updating post with ID: {}", postId, ex);
+            throw new RuntimeException("An unexpected error occurred", ex);
+        }
+    }
+
+    @Override
+    public PostDTO createPost(PostDTO postDTO) {
+        try{
+           Post post = postMapperService.mapToEntity(postDTO);
+           Post savedPost = postRepository.save(post);
+           return postMapperService.mapToDTO(savedPost);
+        }catch(Exception ex){
+            logger.error("error creating a post", ex);
+            throw  new RuntimeException("an error occurred while creating  a post", ex);
         }
     }
 }

@@ -42,11 +42,11 @@ public class AuthServiceImpl implements AuthService {
     public AuthenticationResponse login(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
+        var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(); //todo throw and handle an appropriate exception
         var jwtToken = jwtService.generateJwtToken(user);
         return AuthenticationResponse.builder()

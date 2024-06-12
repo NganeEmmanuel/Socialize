@@ -2,7 +2,9 @@ package com.socialize.service.mapperService;
 
 import com.socialize.dto.CommentDTO;
 import com.socialize.model.Comment;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CommentMapperService implements MapperService<Comment, CommentDTO> {
 
     @Override
