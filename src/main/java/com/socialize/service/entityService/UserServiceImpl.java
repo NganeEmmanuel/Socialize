@@ -1,6 +1,7 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
+import com.socialize.enums.UserStatus;
 import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
@@ -112,6 +113,22 @@ public class UserServiceImpl implements UserService {
             throw ex;
         } catch (Exception ex) {
             return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public UserDTO deactivateUser(Long userId) {
+        User user;
+        try {
+            user = userRepository.findById(userId)
+                    .orElseThrow(()-> new UserNotFoundException(userId) );
+            user.setUserStatus(UserStatus.SUSPENDED);
+            User updatedUser = userRepository.save(user);
+//            UpdateUtils.copyNonNullProperties(user, updatedUser);
+            updatedUser.setLastUpdated(new Date());
+            return userMapper.mapToDTO(updatedUser);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

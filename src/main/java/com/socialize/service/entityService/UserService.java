@@ -19,4 +19,6 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     List<UserDTO> getFollowingUsers(Long userId, int start, int stop);
+
+    UserDTO deactivateUser(Long userId);
 }
