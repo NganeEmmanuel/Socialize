@@ -1,8 +1,7 @@
 package com.socialize.exception.handler;
 
 
-import com.socialize.exception.exceptions.NoMatchingUserFoundException;
-import com.socialize.exception.exceptions.PostNotFoundException;
+import com.socialize.exception.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    //todo brian add UserNotFound exception handler implementation here
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+        logger.error("user not found: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     /**
      * Handles PostNotFoundException and returns a meaningful response.
      *
@@ -40,6 +46,32 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoMatchingUserFoundException.class)
     public ResponseEntity<String> handleNoMatchingUserFoundException(NoMatchingUserFoundException ex, WebRequest request) {
         logger.error("No matching user found while looking through search keyword: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles PostNotFoundException and returns a meaningful response.
+     *
+     * @param ex The PostNotFoundException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<String> handleCommentNotFoundException(CommentNotFoundException ex, WebRequest request) {
+        logger.error("No matching comments found while looking for your post {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles NoChildCommentFoundException and returns a meaningful response.
+     *
+     * @param ex The NoChildCommentFoundException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(NoChildCommentFoundException.class)
+    public ResponseEntity<String> handleNoChildCommentFoundException(NoChildCommentFoundException ex, WebRequest request) {
+        logger.error("No matching child comments found while looking for them: {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
