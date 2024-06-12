@@ -87,5 +87,11 @@ public class GlobalExceptionHandler {
         logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
         return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex, WebRequest request) {
+        logger.error(" User profile not found: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
 
