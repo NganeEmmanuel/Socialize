@@ -1,5 +1,6 @@
 package com.socialize.controller;
 
+import com.socialize.auth.AuthenticationRefreshResponse;
 import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
 import com.socialize.auth.RegisterRequest;
@@ -45,13 +46,18 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
-            return ResponseEntity.ok(authService.logout( token));
+            return ResponseEntity.ok(authService.logout(token));
         } else {
             return ResponseEntity.badRequest().body("Invalid Authorization header.");
         }
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthenticationRefreshResponse> refreshToken(@RequestBody String refreshToken) {
+        return ResponseEntity.ok(authService.refreshToken(refreshToken));
     }
 }

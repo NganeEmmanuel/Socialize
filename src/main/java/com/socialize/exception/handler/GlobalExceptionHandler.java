@@ -76,6 +76,25 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handles NoChildCommentFoundException and returns a meaningful response.
+     *
+     * @param ex The NoChildCommentFoundException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<String> handleTokenExpiredException(TokenExpiredException ex, WebRequest request) {
+        logger.error("The provided token is expired: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex, WebRequest request) {
+        logger.error(" User profile not found: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Handles all other exceptions and returns a generic error response.
      *
      * @param ex The Exception. This parameter allows access to the exception's message and stack trace.
@@ -88,10 +107,5 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ProfileNotFoundException.class)
-    public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex, WebRequest request) {
-        logger.error(" User profile not found: {}", ex.getMessage());
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
 }
 
