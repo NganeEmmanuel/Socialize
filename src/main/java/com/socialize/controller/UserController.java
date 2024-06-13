@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @PostMapping("/update/password")
-    public ResponseEntity<String> updatePassword(@RequestBody Long userId, String oldPassword, String newPassword){
+    public ResponseEntity<String> updatePassword(@RequestParam Long userId, @RequestParam String oldPassword, @RequestParam String newPassword){
         try{
             userService.updatePassword(userId,oldPassword,newPassword);
             return ResponseEntity.ok("Password updated successfully");
