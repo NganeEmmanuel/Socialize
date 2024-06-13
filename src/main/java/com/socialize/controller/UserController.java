@@ -84,5 +84,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/update/password")
+    public ResponseEntity<String> updatePassword(@RequestBody Long userId, String oldPassword, String newPassword){
+        try{
+            userService.updatePassword(userId,oldPassword,newPassword);
+            return ResponseEntity.ok("Password updated successfully");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body("an error occurred" + e.getMessage());
+        }
+    }
+
+
 
 }
