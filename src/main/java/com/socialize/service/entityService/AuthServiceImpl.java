@@ -51,9 +51,10 @@ public class AuthServiceImpl implements AuthService {
                 .userStatus(UserStatus.PENDING)
                 .build();
         userRepository.save(user);
+        //todo configure mail connectioin and uncomment
         //send confirmation mail
-        String token = generateVerificationToken(user.getEmail());
-        sendVerificationEmail(user.getEmail(), token);
+        //String token = generateVerificationToken(user.getEmail());
+        //sendVerificationEmail(user.getEmail(), token);
 
         var jwtToken = jwtService.generateJwtToken(user);
         return AuthenticationResponse.builder()
@@ -73,9 +74,10 @@ public class AuthServiceImpl implements AuthService {
         try {
             var user = userRepository.findByUsername(request.getUsername())
                     .orElseThrow(() -> new NoMatchingUserFoundException(request.getUsername()));
-            if (user.getUserStatus().equals(UserStatus.PENDING)) {
-                throw new UserNotVerifiedException(user.getId());
-            }
+            //todo configure mail connectioin and uncomment
+            // if (user.getUserStatus().equals(UserStatus.PENDING)) {
+            //     throw new UserNotVerifiedException(user.getId());
+            // }
             var jwtToken = jwtService.generateJwtToken(user);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
