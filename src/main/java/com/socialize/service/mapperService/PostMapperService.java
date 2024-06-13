@@ -4,6 +4,8 @@ import com.socialize.dto.PostDTO;
 import com.socialize.model.Post;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+
 @Service
 public class PostMapperService implements MapperService<Post, PostDTO> {
 
@@ -28,7 +30,13 @@ public class PostMapperService implements MapperService<Post, PostDTO> {
         postDTO.setId(post.getId());
         postDTO.setUser(new UserMapperService().mapToDTO(post.getUser()));
         postDTO.setContent(post.getContent());
-        postDTO.setMediaContent(post.getMediaFileContent());
+        postDTO.setMediaContent(
+                post.getMediaFileContent() != null ?
+                        Base64.getEncoder().encode(
+                                post.getMediaFileContent()
+                        ) :
+                        null
+        );
         postDTO.setMediaType(post.getMediaMimeType());
         postDTO.setMediaName(post.getMediaFileName());
         postDTO.setTotalReactions(post.getTotalReactions());
