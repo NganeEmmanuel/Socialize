@@ -40,4 +40,6 @@ public interface AuthService {
      * @throws com.socialize.exception.exceptions.TokenExpiredException if token has expired
      */
     AuthenticationRefreshResponse refreshToken(String refreshToken);
+
+    boolean verifyEmail(String token);
 }
