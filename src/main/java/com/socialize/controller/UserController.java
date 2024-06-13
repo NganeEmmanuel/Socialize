@@ -51,6 +51,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @PostMapping("/follow")
+    public ResponseEntity<String> followUser(@RequestParam("userId") Long userId, @RequestParam("followId")Long followId){
+        try{
+            userService.followUser(userId, followId);
+            return ResponseEntity.ok("user  followed  successfully");
+        }catch(UserNotFoundException ex){
+            return ResponseEntity.status(404).body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("an error occurred");
+        }
+
+
+    }
 
     /**
      * @param username username of user to get
@@ -60,5 +73,16 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String username){
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
+
+    @PostMapping("/unfollow")
+    public ResponseEntity<String> unfollowUser(@RequestParam Long userId, @RequestParam Long followId){
+        try{
+            userService.unfollowUser(userId, followId);
+            return ResponseEntity.ok("user unfollowed successfully");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body("an error occurred" + e.getMessage());
+        }
+    }
+
 
 }
