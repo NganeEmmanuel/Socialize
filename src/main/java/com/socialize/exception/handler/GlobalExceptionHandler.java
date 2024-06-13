@@ -76,9 +76,9 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handles NoChildCommentFoundException and returns a meaningful response.
+     * Handles TokenExpiredException and returns a meaningful response.
      *
-     * @param ex The NoChildCommentFoundException. This parameter allows access to the exception's message and stack trace.
+     * @param ex The TokenExpiredException. This parameter allows access to the exception's message and stack trace.
      * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
      * @return A ResponseEntity containing the error message and HTTP status.
      */
@@ -86,6 +86,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleTokenExpiredException(TokenExpiredException ex, WebRequest request) {
         logger.error("The provided token is expired: {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    /**
+     * Handles UserNotVerifiedException and returns a meaningful response.
+     *
+     * @param ex The UserNotVerifiedException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public ResponseEntity<String> handleUserNotVerifiedException(UserNotVerifiedException ex, WebRequest request) {
+        logger.error("User email is not verified: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_REQUIRED);
     }
 
     @ExceptionHandler(ProfileNotFoundException.class)
