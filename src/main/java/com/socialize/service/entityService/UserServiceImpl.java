@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapperService userMapper;
+    private  final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -139,5 +141,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         followUser.getFollowers().remove(user);
         userRepository.save(followUser);
+    }
+
+    @Override
+    public void updatePassword(Long userId, String oldPassword, String newPassword) throws Exception {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        if(!passwordEncoder.matches(oldPassword,user.getPassword())){
+            throw new RuntimeException(" password does not match, check again!");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

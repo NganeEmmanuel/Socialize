@@ -87,6 +87,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/update/password")
+    public ResponseEntity<String> updatePassword(@RequestParam Long userId, @RequestParam String oldPassword, @RequestParam String newPassword){
+        try{
+            userService.updatePassword(userId,oldPassword,newPassword);
+            return ResponseEntity.ok("Password updated successfully");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body("an error occurred" + e.getMessage());
+        }
+    }
+
     @PutMapping("/deactivate")
     public ResponseEntity<UserDTO> deactivateUser(@RequestParam Long userId){
         try {
@@ -115,6 +125,4 @@ public class UserController {
             return ResponseEntity.status(500).body(null);
         }
     }
-
-
 }

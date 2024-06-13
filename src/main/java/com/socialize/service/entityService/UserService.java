@@ -21,4 +21,6 @@ public interface UserService {
     void followUser(Long userId, Long followId)  throws UserNotFoundException;
 
     void unfollowUser(Long userId, Long followId);
+
+    void updatePassword(Long userId, String oldPassword, String newPassword) throws Exception;
 }
