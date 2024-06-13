@@ -3,6 +3,7 @@ package com.socialize.controller;
 import com.socialize.dto.UserDTO;
 import com.socialize.exception.exceptions.PostNotFoundException;
 import com.socialize.exception.exceptions.UserNotFoundException;
+import com.socialize.service.entityService.PostService;
 import com.socialize.service.entityService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class UserController {
 
 
     private final UserService userService;
+    private final PostService postService;
 
     @GetMapping("/following")
     public ResponseEntity<List<UserDTO>> getFollowingUsers(
@@ -125,4 +127,5 @@ public class UserController {
             return ResponseEntity.status(500).body(null);
         }
     }
+
 }

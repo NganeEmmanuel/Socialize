@@ -1,14 +1,19 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.PostDTO;
+import com.socialize.enums.ReactionType;
 import com.socialize.exception.exceptions.PostNotFoundException;
 import com.socialize.model.Post;
+import com.socialize.model.Reaction;
+import com.socialize.model.User;
 import com.socialize.repository.PostRepository;
+import com.socialize.repository.UserRepository;
 import com.socialize.service.mapperService.PostMapperService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class PostServiceImpl implements PostService {
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
     private final PostRepository postRepository;
     private final PostMapperService postMapperService;
+    private final UserRepository userRepository;
 
     /**
      * Deletes a post by its ID.
@@ -64,7 +70,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostDTO getPostDTOById(Long postId) throws PostNotFoundException {
-        try{
+        try {
             Post post = getPostById(postId);
             return postMapperService.mapToDTO(post);
         } catch (PostNotFoundException ex) {
@@ -102,13 +108,30 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO createPost(PostDTO postDTO) {
-        try{
-           Post post = postMapperService.mapToEntity(postDTO);
-           Post savedPost = postRepository.save(post);
-           return postMapperService.mapToDTO(savedPost);
-        }catch(Exception ex){
+        try {
+            Post post = postMapperService.mapToEntity(postDTO);
+            Post savedPost = postRepository.save(post);
+            return postMapperService.mapToDTO(savedPost);
+        } catch (Exception ex) {
             logger.error("error creating a post", ex);
-            throw  new RuntimeException("an error occurred while creating  a post", ex);
+            throw new RuntimeException("an error occurred while creating  a post", ex);
         }
+    }
+
+    @Override
+    @Transactional
+    public void reactToPost(Long userId, Long postId, ReactionType reactionType) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException( postId));
+
+        Reaction reaction = new Reaction(reactionType, user);
+
+        reaction.setPost(post);
+
+
+        post.setTotalReactions(post.getTotalReactions() + 1);
+        postRepository.save(post);
+
     }
 }
