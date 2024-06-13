@@ -1,6 +1,7 @@
 package com.socialize.controller;
 
 import com.socialize.dto.PostDTO;
+import com.socialize.enums.ReactionType;
 import com.socialize.exception.exceptions.PostNotFoundException;
 import com.socialize.service.entityService.PostService;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +87,26 @@ public class PostController {
         }catch(Exception ex){
             logger.error("error creating new post", ex);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/react")
+    public ResponseEntity<String> reactToPost(@RequestParam Long userId, @RequestParam Long postId) {
+        try {
+            postService.reactToPost(userId, postId, ReactionType.HEART);
+            return ResponseEntity.ok("Reaction added to post successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/react/undo")
+    public ResponseEntity<String> undoReactPost(@RequestParam Long userId, @RequestParam Long postId) {
+        try {
+            postService.undoReactPost(userId, postId);
+            return ResponseEntity.ok("Reaction removed successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 }

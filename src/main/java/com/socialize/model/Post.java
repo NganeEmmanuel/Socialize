@@ -32,6 +32,7 @@ public class Post {
     private String mediaMimeType;
 
     @Lob
+    @Column(name = "media_file_content", columnDefinition = "LONGBLOB")
     private byte[] mediaFileContent;
 
     private Integer totalReactions;
