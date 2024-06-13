@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/post")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
