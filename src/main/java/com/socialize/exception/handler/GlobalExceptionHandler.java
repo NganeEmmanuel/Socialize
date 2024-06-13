@@ -76,6 +76,38 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handles TokenExpiredException and returns a meaningful response.
+     *
+     * @param ex The TokenExpiredException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<String> handleTokenExpiredException(TokenExpiredException ex, WebRequest request) {
+        logger.error("The provided token is expired: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    /**
+     * Handles UserNotVerifiedException and returns a meaningful response.
+     *
+     * @param ex The UserNotVerifiedException. This parameter allows access to the exception's message and stack trace.
+     * @param request The WebRequest that led to the exception. This parameter can provide additional context about the request.
+     * @return A ResponseEntity containing the error message and HTTP status.
+     */
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public ResponseEntity<String> handleUserNotVerifiedException(UserNotVerifiedException ex, WebRequest request) {
+        logger.error("User email is not verified: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.PRECONDITION_REQUIRED);
+    }
+
+    @ExceptionHandler(ProfileNotFoundException.class)
+    public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex, WebRequest request) {
+        logger.error(" User profile not found: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Handles all other exceptions and returns a generic error response.
      *
      * @param ex The Exception. This parameter allows access to the exception's message and stack trace.
@@ -87,5 +119,6 @@ public class GlobalExceptionHandler {
         logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
         return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }
 

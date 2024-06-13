@@ -4,6 +4,7 @@ import com.socialize.enums.UserAuthority;
 import com.socialize.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,13 +48,14 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "follower_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-
     private Set<User> followers = new HashSet<>();
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "followers")
     private Set<User> following = new HashSet<>();
 
@@ -102,6 +104,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-
-

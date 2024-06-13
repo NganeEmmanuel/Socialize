@@ -2,6 +2,7 @@ package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
 import com.socialize.enums.UserStatus;
+import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
@@ -29,33 +30,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDTO getUserById(Long userId) {
-        User user;
-        try {
-            user = userRepository.findById(userId)
-                    .orElseThrow(ChangeSetPersister.NotFoundException::new);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        return userMapper.mapToDTO(user);
-    }
-
-    @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.mapToEntity(userDTO);
-        User savedUser = userRepository.save(user);
-        return userMapper.mapToDTO(savedUser);
-    }
-
-
-    @Override
     public UserDTO updateUser(Long userId, UserDTO userDTO) {
         try {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException(userDTO.getId()));
 
-           UpdateUtils.copyNonNullProperties(userDTO, user);
+            UpdateUtils.copyNonNullProperties(userDTO, user);
             user.setLastUpdated(new Date());
             User updatedUser = userRepository.save(user);
             return userMapper.mapToDTO(updatedUser);
@@ -66,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
     @Override
     public void deleteUser(Long userId) {
         User user;
@@ -80,11 +61,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-//        List<User> users = userRepository.findAll();
-//        return userMapper.mapToDTOList(users);
-        return null;
+    public UserDTO getUserByUsername(String username) {
+        try{
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new NoMatchingUserFoundException(username));
+            return userMapper.mapToDTO(user);
+        }catch (NoMatchingUserFoundException ex){
+            logger.info("Could not find user with username: {}", username);
+            throw new RuntimeException(ex);
+        }catch (Exception e){
+            logger.info("An error occurred while getting the user with username: {}", username);
+            throw new RuntimeException(e);
+        }
     }
+
     @Override
     @Transactional
     public List<UserDTO> getFollowingUsers(Long userId, int start, int stop) {
@@ -132,5 +122,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public void followUser(Long userId, Long followId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User followUser = userRepository.findById(followId).orElseThrow(() -> new UserNotFoundException(followId));
+        // adding user to the followers of followId
+        followUser.getFollowers().add(user);
+        userRepository.save(followUser);
+    }
 
+    @Override
+    public void unfollowUser(Long userId, Long followId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User followUser = userRepository.findById(followId).orElseThrow(() -> new RuntimeException("user to unfollow not found"));
+        //un follow user
+        user.getFollowing().remove(followUser);
+        userRepository.save(user);
+        followUser.getFollowers().remove(user);
+        userRepository.save(followUser);
+    }
 }
