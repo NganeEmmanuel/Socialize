@@ -9,15 +9,11 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDTO getUserById(Long userId);
-
-    UserDTO createUser(UserDTO userDTO);
-
     UserDTO updateUser(Long userId, UserDTO userDTO);
 
     void deleteUser(Long userId);
 
-    List<UserDTO> getAllUsers();
+    UserDTO getUserByUsername(String username);
 
     List<UserDTO> getFollowingUsers(Long userId, int start, int stop);
     void followUser(Long userId, Long followId)  throws UserNotFoundException;

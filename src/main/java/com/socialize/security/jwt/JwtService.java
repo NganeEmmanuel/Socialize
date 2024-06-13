@@ -1,10 +1,13 @@
 package com.socialize.security.jwt;
 
+import com.socialize.model.User;
+import com.socialize.repository.TokenBlacklistRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +18,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
     private static final String SECRET_KEY = System.getenv("JWT_SECRET_KEY") != null
         ? System.getenv("JWT_SECRET_KEY")
         : "DE79AF2BD6D2F70D654D80B16DDFCA5487A75795E8C33A906F990C64522C45BE";
+    private final TokenBlacklistRepository tokenBlacklistRepository;
     public String extractUserName(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
     }
@@ -47,6 +52,9 @@ public class JwtService {
     }
 
     public boolean isJwtTokenValid(String jwtToken, UserDetails userDetails){
+        if (isTokenBlacklisted(jwtToken)) {
+            return false;
+        }
         final String username = extractUserName(jwtToken);
         return (username.equals(userDetails.getUsername()) && !isJwtTokenExpired(jwtToken));
     }
@@ -55,7 +63,7 @@ public class JwtService {
         return extractExpiration(jwtToken).before(new Date());
     }
 
-    private Date extractExpiration(String jwtToken) {
+    public Date extractExpiration(String jwtToken) {
         return extractClaim(jwtToken, Claims::getExpiration);
     }
 
@@ -71,5 +79,9 @@ public class JwtService {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private boolean isTokenBlacklisted(String token) {
+        return tokenBlacklistRepository.findByToken(token).isPresent();
     }
 }

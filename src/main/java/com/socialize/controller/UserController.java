@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,23 +35,20 @@ public class UserController {
     }
 
     /**
-     * ret
-     * @param userDTO
-     * @return
+     * @param userDTO user object received from the request
+     * @return user object on success and a 404 status on failure
      */
     @PutMapping("/edit/profile")
     public ResponseEntity<UserDTO> editProfile(@RequestBody UserDTO userDTO){
         try {
-            logger.info("API call to edit the profile of a user with ID: {}", userDTO.getId());
-
             UserDTO updatedUser = userService.updateUser(userDTO.getId(), userDTO);
         return ResponseEntity.ok(updatedUser);
         } catch (UserNotFoundException ex) {
             logger.error("Error fetching the user with ID: {}", userDTO.getId(), ex);
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
             logger.error("An error occurred while updating the user with ID: {}", userDTO.getId(), e);
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
     @PostMapping("/follow")
@@ -65,6 +63,15 @@ public class UserController {
         }
 
 
+    }
+
+    /**
+     * @param username username of user to get
+     * @return user object on success and a 404 status on failure
+     */
+    @GetMapping("/get-user")
+    public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String username){
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
 }

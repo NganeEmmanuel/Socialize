@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class PostServiceImpl implements PostService {
 
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
-
     private final PostRepository postRepository;
     private final PostMapperService postMapperService;
 
