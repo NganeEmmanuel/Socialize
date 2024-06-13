@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException(userDTO.getId()));
 
-           UpdateUtils.copyNonNullProperties(userDTO, user);
+            UpdateUtils.copyNonNullProperties(userDTO, user);
             user.setLastUpdated(new Date());
             User updatedUser = userRepository.save(user);
             return userMapper.mapToDTO(updatedUser);
@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
     @Override
     public void deleteUser(Long userId) {
         User user;
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
 //        return userMapper.mapToDTOList(users);
         return null;
     }
+
     @Override
     @Transactional
     public List<UserDTO> getFollowingUsers(Long userId, int start, int stop) {
@@ -115,5 +117,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @Override
+    public void followUser(Long userId, Long followId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User followUser = userRepository.findById(followId).orElseThrow(() -> new UserNotFoundException(followId));
+        // adding user to the followers of followId
+        followUser.getFollowers().add(user);
+        userRepository.save(followUser);
+    }
 }

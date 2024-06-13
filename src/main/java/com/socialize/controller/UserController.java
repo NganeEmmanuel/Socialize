@@ -53,5 +53,18 @@ public class UserController {
             return ResponseEntity.status(500).body(null);
         }
     }
+    @PostMapping("/follow")
+    public ResponseEntity<String> followUser(@RequestParam("userId") Long userId, @RequestParam("followId")Long followId){
+        try{
+            userService.followUser(userId, followId);
+            return ResponseEntity.ok("user  followed  successfully");
+        }catch(UserNotFoundException ex){
+            return ResponseEntity.status(404).body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("an error occurred");
+        }
+
+
+    }
 
 }

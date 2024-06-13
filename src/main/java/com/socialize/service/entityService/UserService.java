@@ -1,6 +1,7 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
+import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,5 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     List<UserDTO> getFollowingUsers(Long userId, int start, int stop);
+    void followUser(Long userId, Long followId)  throws UserNotFoundException;
 }
