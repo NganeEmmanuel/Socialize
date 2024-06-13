@@ -17,4 +17,6 @@ public interface UserService {
 
     List<UserDTO> getFollowingUsers(Long userId, int start, int stop);
     void followUser(Long userId, Long followId)  throws UserNotFoundException;
+
+    void unfollowUser(Long userId, Long followId);
 }

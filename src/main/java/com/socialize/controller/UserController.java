@@ -74,4 +74,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
+    @PostMapping("/unfollow")
+    public ResponseEntity<String> unfollowUser(@RequestParam Long userId, @RequestParam Long followId){
+        try{
+            userService.unfollowUser(userId, followId);
+            return ResponseEntity.ok("user unfollowed successfully");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body("an error occurred" + e.getMessage());
+        }
+    }
+
+
 }

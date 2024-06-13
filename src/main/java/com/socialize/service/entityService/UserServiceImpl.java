@@ -113,4 +113,15 @@ public class UserServiceImpl implements UserService {
         followUser.getFollowers().add(user);
         userRepository.save(followUser);
     }
+
+    @Override
+    public void unfollowUser(Long userId, Long followId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User followUser = userRepository.findById(followId).orElseThrow(() -> new RuntimeException("user to unfollow not found"));
+        //un follow user
+        user.getFollowing().remove(followUser);
+        userRepository.save(user);
+        followUser.getFollowers().remove(user);
+        userRepository.save(followUser);
+    }
 }
