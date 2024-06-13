@@ -16,6 +16,8 @@ public interface UserService {
     UserDTO getUserByUsername(String username);
 
     List<UserDTO> getFollowingUsers(Long userId, int start, int stop);
+
+    UserDTO deactivateUser(Long userId);
     void followUser(Long userId, Long followId)  throws UserNotFoundException;
 
     void unfollowUser(Long userId, Long followId);
