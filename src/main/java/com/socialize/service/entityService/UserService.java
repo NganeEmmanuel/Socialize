@@ -16,7 +16,7 @@ public interface UserService {
 
     void deleteUser(Long userId);
 
-    List<UserDTO> getAllUsers();
+    UserDTO getUserByUsername(String username);
 
     List<UserDTO> getFollowingUsers(Long userId, int start, int stop);
 }

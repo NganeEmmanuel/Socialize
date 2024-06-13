@@ -35,15 +35,12 @@ public class UserController {
     }
 
     /**
-     * ret
-     * @param userDTO
-     * @return
+     * @param userDTO user object received from the request
+     * @return user object on success and a 404 status on failure
      */
     @PutMapping("/edit/profile")
     public ResponseEntity<UserDTO> editProfile(@RequestBody UserDTO userDTO){
         try {
-            logger.info("API call to edit the profile of a user with ID: {}", userDTO.getId());
-
             UserDTO updatedUser = userService.updateUser(userDTO.getId(), userDTO);
         return ResponseEntity.ok(updatedUser);
         } catch (UserNotFoundException ex) {
@@ -53,6 +50,15 @@ public class UserController {
             logger.error("An error occurred while updating the user with ID: {}", userDTO.getId(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    /**
+     * @param username username of user to get
+     * @return user object on success and a 404 status on failure
+     */
+    @GetMapping("/get-user")
+    public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String username){
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
 }

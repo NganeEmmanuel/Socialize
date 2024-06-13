@@ -1,6 +1,7 @@
 package com.socialize.service.entityService;
 
 import com.socialize.dto.UserDTO;
+import com.socialize.exception.exceptions.NoMatchingUserFoundException;
 import com.socialize.exception.exceptions.UserNotFoundException;
 import com.socialize.model.User;
 import com.socialize.repository.UserRepository;
@@ -79,10 +80,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-//        List<User> users = userRepository.findAll();
-//        return userMapper.mapToDTOList(users);
-        return null;
+    public UserDTO getUserByUsername(String username) {
+        try{
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new NoMatchingUserFoundException(username));
+            return userMapper.mapToDTO(user);
+        }catch (NoMatchingUserFoundException ex){
+            logger.info("Could not find user with username: {}", username);
+            throw new RuntimeException(ex);
+        }catch (Exception e){
+            logger.info("An error occurred while getting the user with username: {}", username);
+            throw new RuntimeException(e);
+        }
     }
     @Override
     @Transactional
