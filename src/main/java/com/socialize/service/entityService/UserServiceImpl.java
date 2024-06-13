@@ -29,27 +29,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDTO getUserById(Long userId) {
-        User user;
-        try {
-            user = userRepository.findById(userId)
-                    .orElseThrow(ChangeSetPersister.NotFoundException::new);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        return userMapper.mapToDTO(user);
-    }
-
-    @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.mapToEntity(userDTO);
-        User savedUser = userRepository.save(user);
-        return userMapper.mapToDTO(savedUser);
-    }
-
-
-    @Override
     public UserDTO updateUser(Long userId, UserDTO userDTO) {
         try {
             User user = userRepository.findById(userId)
@@ -93,6 +72,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     @Transactional
     public List<UserDTO> getFollowingUsers(Long userId, int start, int stop) {
