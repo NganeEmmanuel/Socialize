@@ -8,7 +8,7 @@ import com.socialize.model.Post;
 public interface PostService {
     void deletePost(Long id) throws PostNotFoundException;
 
-    Post getPostById(Long postId);
+   Post getPostById(Long postId );
 
     PostDTO getPostDTOById(Long postId) throws PostNotFoundException;
 

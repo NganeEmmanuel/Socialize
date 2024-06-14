@@ -4,6 +4,8 @@ import com.socialize.dto.UserDTO;
 import com.socialize.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+
 @Service
 public class UserMapperService implements MapperService<User, UserDTO> {
 
@@ -29,7 +31,14 @@ public class UserMapperService implements MapperService<User, UserDTO> {
         userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setAuthority(user.getAuthority());
-        userDTO.setProfilePicture(user.getProfilePicture());
+        userDTO.setProfilePicture(
+
+                user.getProfilePicture() != null ?
+                        Base64.getEncoder().encode(
+                                user.getProfilePicture()
+                        ) :
+                        null
+        );
         userDTO.setMediaMimeType(user.getMediaMimeType());
         // Set additional fields as needed
         return userDTO;
