@@ -20,7 +20,6 @@ src/main/java/com/socialize/security
 src/main/java/com/socialize/model
 src/main/java/com/socialize/dto
 src/main/java/com/socialize/enums
-src/main/resources
 
 ### IntelliJ IDEA ###
 .idea
