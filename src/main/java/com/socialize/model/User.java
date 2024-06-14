@@ -39,6 +39,7 @@ public class User implements UserDetails {
     private UserAuthority authority;
 
     @Lob
+    @Column(name = "profile_picture", columnDefinition = "LONGBLOB")
     private byte[] profilePicture;
 
     private String mediaMimeType;
