@@ -14,7 +14,7 @@ public interface PostService {
 
     void updatePost(Long postId, PostDTO postDTO) throws PostNotFoundException;
 
-    PostDTO createPost(PostDTO postDTO);
+    PostDTO createPost(PostDTO postDTO, Long userId);
 
     void reactToPost(Long userId, Long postId, ReactionType reactionType) throws Exception;
 

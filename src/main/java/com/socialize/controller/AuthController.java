@@ -4,6 +4,7 @@ import com.socialize.auth.AuthenticationRefreshResponse;
 import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
 import com.socialize.auth.RegisterRequest;
+import com.socialize.dto.UserDTO;
 import com.socialize.service.entityService.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,16 @@ public class AuthController {
             return ResponseEntity.ok(authService.logout(token));
         } else {
             return ResponseEntity.badRequest().body("Invalid Authorization header.");
+        }
+    }
+
+    @GetMapping("/get-looged-user")
+    public ResponseEntity<UserDTO> getLoggedInUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+            return ResponseEntity.ok(authService.getLoggedInUser(token));
+        } else {
+            return ResponseEntity.badRequest().body(new UserDTO());
         }
     }
 
