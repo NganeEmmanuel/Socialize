@@ -4,6 +4,7 @@ import com.socialize.auth.AuthenticationRefreshResponse;
 import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
 import com.socialize.auth.RegisterRequest;
+import com.socialize.dto.UserDTO;
 import com.socialize.exception.exceptions.AuthException;
 
 public interface AuthService {
@@ -42,4 +43,6 @@ public interface AuthService {
     AuthenticationRefreshResponse refreshToken(String refreshToken);
 
     boolean verifyEmail(String token);
+
+    UserDTO getLoggedInUser(String token);
 }
