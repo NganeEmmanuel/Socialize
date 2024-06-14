@@ -17,5 +17,7 @@ public interface PostService {
     PostDTO createPost(PostDTO postDTO);
 
     void reactToPost(Long userId, Long postId, ReactionType reactionType) throws Exception;
+
+    void undoReactPost(Long userId, Long postId);
 }
 
