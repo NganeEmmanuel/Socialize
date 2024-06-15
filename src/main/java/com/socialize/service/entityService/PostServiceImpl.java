@@ -110,11 +110,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO createPost(PostDTO postDTO) {
+    public PostDTO createPost(PostDTO postDTO, Long userId) {
         try {
-            User user = userRepository.findById(postDTO.getId())
-                    .orElseThrow(() -> new UserNotFoundException(postDTO.getId()));
             Post post = postMapperService.mapToEntity(postDTO);
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException(userId));
             post.setUser(user);
             Post savedPost = postRepository.save(post);
             return postMapperService.mapToDTO(savedPost);

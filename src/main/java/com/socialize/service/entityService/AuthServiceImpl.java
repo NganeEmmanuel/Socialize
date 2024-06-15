@@ -4,6 +4,7 @@ import com.socialize.auth.AuthenticationRefreshResponse;
 import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
 import com.socialize.auth.RegisterRequest;
+import com.socialize.dto.UserDTO;
 import com.socialize.enums.UserAuthority;
 import com.socialize.enums.UserStatus;
 import com.socialize.exception.exceptions.NoMatchingUserFoundException;
@@ -15,6 +16,7 @@ import com.socialize.repository.TokenBlacklistRepository;
 import com.socialize.repository.UserRepository;
 import com.socialize.security.jwt.JwtService;
 import com.socialize.service.mailService.EmailService;
+import com.socialize.service.mapperService.UserMapperService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final TokenBlacklistRepository tokenBlacklistRepository;private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
     private final EmailService emailService;
+    private final UserMapperService userMapperService;
 
     private Map<String, String> verificationTokens = new HashMap<>(); // Temporary storage for tokens
 
@@ -159,5 +162,17 @@ public class AuthServiceImpl implements AuthService {
             }
         }
         return false;
+    }
+
+    @Override
+    public UserDTO getLoggedInUser(String token) {
+        var username = jwtService.extractUserName(token);
+        try {
+            var user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new NoMatchingUserFoundException(username));
+            return userMapperService.mapToDTO(user);
+        }catch (NoMatchingUserFoundException ex){
+            throw new RuntimeException(ex);
+        }
     }
 }

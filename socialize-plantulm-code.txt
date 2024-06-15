@@ -1,0 +1,323 @@
+@startuml
+package "com.socialize.model" {
+  class User {
+    + Long id
+    + String name
+    + String username
+    + String email
+    + String password
+    + UserAuthority authority
+    + byte[] profilePicture
+    + String mediaMimeType
+    + UserStatus userStatus
+    + Date joinDate
+    + Date lastUpdated
+    + Collection<? extends GrantedAuthority> getAuthorities()
+    + boolean isAccountNonExpired()
+    + boolean isAccountNonLocked()
+    + boolean isCredentialsNonExpired()
+    + boolean isEnabled()
+  }
+
+  class Post {
+    + Long id
+    + String content
+    + String mediaFileName
+    + String mediaMimeType
+    + byte[] mediaFileContent
+    + Integer totalReactions
+    + Integer totalComments
+    + PostStatus postStatus
+    + Date addedDate
+    + Date lastEdited
+    + void addComment(Comment comment)
+    + void removeComment(Comment comment)
+  }
+
+  class Comment {
+    + Long id
+    + String content
+    + Date addedDate
+  }
+
+  class Reaction {
+    + Long id
+    + ReactionType reaction
+    + Date likeDate
+  }
+
+  class TokenBlacklist {
+    + Long id
+    + String token
+    + Date expirationDate
+  }
+}
+
+package "com.socialize.enums" {
+  enum UserAuthority
+  enum UserStatus
+  enum PostStatus
+  enum ReactionType
+}
+
+package com.socialize.auth {
+    class AuthenticationRefreshResponse {
+        - String token
+    }
+
+    class AuthenticationRequest {
+        - String username
+        - String password
+    }
+
+    class AuthenticationResponse {
+        - String token
+    }
+
+    class RegisterRequest {
+        - String name
+        - String username
+        - String email
+        - String password
+    }
+}
+
+package com.socialize.controller {
+    class AuthController {
+        - AuthService authService
+        + ResponseEntity<AuthenticationResponse> register(RegisterRequest request)
+        + ResponseEntity<AuthenticationResponse> login(AuthenticationRequest request)
+        + ResponseEntity<String> logout(String authorizationHeader)
+        + ResponseEntity<AuthenticationRefreshResponse> refreshToken(String refreshToken)
+        + ResponseEntity<String> verifyEmail(String token)
+    }
+
+    class CommentController {
+        - CommentServiceImpl commentService
+        + ResponseEntity<List<CommentDTO>> getComment(Long postId, int start, int stop)
+        + ResponseEntity<List<CommentDTO>> getChildComments(Long postId, Integer parentCommentId, int start, int stop)
+    }
+
+    class FeedController {
+        - FeedServiceImpl feedService
+        + ResponseEntity<List<PostDTO>> getFeed(Long id, int start, int stop)
+    }
+
+    class PostController {
+        - PostService postService
+        + ResponseEntity<String> deletePost(Long id)
+        + ResponseEntity<PostDTO> getPost(Long id)
+        + ResponseEntity<String> updatePost(Long id, PostDTO postDTO)
+        + ResponseEntity<PostDTO> createPost(PostDTO postDTO)
+    }
+
+    class SearchController {
+        -Logger logger
+        -SearchServiceImpl searchService
+        +ResponseEntity<List<UserDTO>> getUserByUsernameOrName(String keyword, int start, int stop)
+    }
+
+    class UserController {
+        -Logger logger
+        -UserService userService
+        +ResponseEntity<List<UserDTO>> getFollowingUsers(Long userId, int start, int stop)
+        +ResponseEntity<UserDTO> editProfile(UserDTO userDTO)
+        +ResponseEntity<String> followUser(Long userId, Long followId)
+        +ResponseEntity<UserDTO> getUserByUsername(String username)
+        +ResponseEntity<String> unfollowUser(Long userId, Long followId)
+        +ResponseEntity<String> updatePassword(Long userId, String oldPassword, String newPassword)
+        +ResponseEntity<UserDTO> deactivateUser(Long userId)
+        +ResponseEntity<String> deleteUser(Long userId)
+    }
+
+    class UserProfileController {
+        -Logger logger
+        -UserProfileServiceImpl userProfileServiceImpl
+        +ResponseEntity<UserDTO> getUserProfile(Long userId)
+    }
+}
+
+package com.socialize.dto {
+    class CommentDTO {
+        +Long id
+        +String content
+        +Integer parentCommentId
+        +Integer totalReaction
+        +UserDTO user
+        +PostDTO post
+    }
+
+    class PostDTO {
+        +Long id
+        +UserDTO user
+        +String content
+        +byte[] mediaContent
+        +String mediaType
+        +String mediaName
+        +Integer totalReactions
+        +Integer totalComments
+    }
+
+    class ReactionDTO {
+        +Long id
+        +ReactionType reaction
+        +UserDTO user
+        +PostDTO post
+        +CommentDTO comment
+    }
+
+    class UserDTO {
+        +Long id
+        +String name
+        +String username
+        +String email
+        +UserAuthority authority
+        +UserStatus userStatus
+        +byte[] profilePicture
+        +String mediaMimeType
+    }
+}
+
+package com.socialize.exception.exceptions {
+    class CommentNotFoundException
+    class NoChildCommentFoundException
+    class PostNotFoundException
+}
+
+package com.socialize.service.entityService {
+    interface AuthService {
+        + AuthenticationResponse signup(RegisterRequest request)
+        + AuthenticationResponse login(AuthenticationRequest request)
+        + String logout(String token)
+        + AuthenticationRefreshResponse refreshToken(String refreshToken)
+        + boolean verifyEmail(String token)
+    }
+
+    class AuthServiceImpl {
+        + AuthenticationResponse signup(RegisterRequest request)
+        + AuthenticationResponse login(AuthenticationRequest request)
+        + String logout(String token)
+        + AuthenticationRefreshResponse refreshToken(String refreshToken)
+        + boolean verifyEmail(String token)
+    }
+    
+    interface CommentService {
+        + List<CommentDTO> getComment(Long postId, int start, int stop)
+        + List<CommentDTO> getChildComment(Long postId, Integer parentCommentId, int start, int stop)
+    }
+
+    class CommentServiceImpl {
+        + List<CommentDTO> getComment(Long postId, int start, int stop)
+        + List<CommentDTO> getChildComment(Long postId, Integer parentCommentId, int start, int stop)
+    }
+    
+    interface FeedService {
+        + List<PostDTO> getFeed(Long id, int start, int stop)
+    }
+
+    class FeedServiceImpl {
+        + List<PostDTO> getFeed(Long id, int start, int stop)
+    }
+
+    interface PostService {
+        + void deletePost(Long id)
+        + PostDTO getPostDTOById(Long id)
+        + void updatePost(Long id, PostDTO postDTO)
+        + PostDTO createPost(PostDTO postDTO)
+    }
+
+    class PostServiceImpl {
+        + void deletePost(Long id)
+        + PostDTO getPostDTOById(Long id)
+        + void updatePost(Long id, PostDTO postDTO)
+        + PostDTO createPost(PostDTO postDTO)
+    }
+
+    interface SearchService {
+        +List<UserDTO> getUserDTOByUsername(String keyword, int start, int stop)
+    }
+
+    class SearchServiceImpl {
+        +List<UserDTO> getUserDTOByUsername(String keyword, int start, int stop)
+    }
+
+    interface UserService {
+        +List<UserDTO> getFollowingUsers(Long userId, int start, int stop)
+        +UserDTO updateUser(Long id, UserDTO userDTO)
+        +void followUser(Long userId, Long followId)
+        +UserDTO getUserByUsername(String username)
+        +void unfollowUser(Long userId, Long followId)
+        +void updatePassword(Long userId, String oldPassword, String newPassword)
+        +UserDTO deactivateUser(Long userId)
+        +void deleteUser(Long userId)
+    }
+
+    class UserServiceImpl {
+        +List<UserDTO> getFollowingUsers(Long userId, int start, int stop)
+        +UserDTO updateUser(Long id, UserDTO userDTO)
+        +void followUser(Long userId, Long followId)
+        +UserDTO getUserByUsername(String username)
+        +void unfollowUser(Long userId, Long followId)
+        +void updatePassword(Long userId, String oldPassword, String newPassword)
+        +UserDTO deactivateUser(Long userId)
+        +void deleteUser(Long userId)
+    }
+
+    interface UserProfileService {
+        +UserDTO getUserProfileById(Long userId)
+    }
+
+    class UserProfileServiceImpl {
+        +UserDTO getUserProfileById(Long userId)
+    }
+}
+
+AuthController --> AuthService
+CommentController --> CommentServiceImpl : uses
+FeedController --> FeedServiceImpl : uses
+PostController --> PostService : uses
+SearchController --> SearchServiceImpl : uses
+UserController --> UserService : uses
+UserProfileController --> UserProfileServiceImpl : uses
+
+AuthService --> AuthServiceImpl : Implements
+CommentService --> CommentServiceImpl : Implements
+FeedService --> FeedServiceImpl : Implements
+PostService --> PostServiceImpl : Implements
+SearchService --> SearchServiceImpl : Implements
+UserService --> UserServiceImpl : Implements
+UserProfileService --> UserProfileServiceImpl : Implements
+
+AuthServiceImpl --> AuthenticationRefreshResponse : uses
+AuthServiceImpl --> AuthenticationResponse : uses
+AuthServiceImpl --> AuthenticationRequest : uses
+AuthServiceImpl --> RegisterRequest : uses
+
+PostDTO --> UserDTO : has
+CommentDTO --> UserDTO : has
+CommentDTO --> PostDTO : has
+ReactionDTO --> UserDTO : has
+ReactionDTO --> PostDTO : has
+ReactionDTO --> CommentDTO : has
+
+UserController --> UserDTO : uses
+UserServiceImpl --> UserDTO : has
+PostController --> PostDTO : uses
+PostService --> PostDTO : has
+CommentController --> CommentDTO : uses
+CommentService --> CommentDTO : has
+PostController --> ReactionDTO : uses
+PostService --> ReactionDTO : has
+
+User --> UserAuthority : has
+User --> UserStatus : has
+Post --> PostStatus : has
+Reaction --> ReactionType: has
+
+User "1" -- "*" Post : has
+Post "1" -- "*" Comment : has
+Post "1" -- "*" Reaction : has
+User "1" -- "*" Reaction : reacts
+Comment "1" -- "*" Reaction : receives
+User "0..*" -- "0..*" User : follows
+@enduml

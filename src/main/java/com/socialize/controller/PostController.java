@@ -81,9 +81,9 @@ public class PostController {
         }
     }
     @PostMapping("/new")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestParam Long userId) {
         try{
-           PostDTO createdPost = postService.createPost(postDTO);
+           PostDTO createdPost = postService.createPost(postDTO, userId);
            return new ResponseEntity<>(createdPost, HttpStatus.OK);
         }catch(Exception ex){
             logger.error("error creating new post", ex);
