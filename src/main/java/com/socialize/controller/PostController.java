@@ -1,5 +1,6 @@
 package com.socialize.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialize.dto.PostDTO;
 import com.socialize.enums.ReactionType;
 import com.socialize.exception.exceptions.PostNotFoundException;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/post")
@@ -19,6 +21,7 @@ public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     private final PostService postService;
+    ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Deletes a post by its ID.
@@ -81,13 +84,22 @@ public class PostController {
         }
     }
     @PostMapping("/new")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @RequestParam Long userId) {
-        try{
-           PostDTO createdPost = postService.createPost(postDTO, userId);
-           return new ResponseEntity<>(createdPost, HttpStatus.OK);
-        }catch(Exception ex){
-            logger.error("error creating new post", ex);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    public String createPost(@ModelAttribute PostDTO postDTO,
+                                              @RequestParam("file") MultipartFile file,
+                                              @RequestParam Long userId) {
+        try {
+            // Set file details in PostDTO
+            if (!file.isEmpty()) {
+                postDTO.setMediaContent(file.getBytes());
+                postDTO.setMediaType(file.getContentType());
+                postDTO.setMediaName(file.getOriginalFilename());
+            }
+
+            // Assuming user details are set separately in postDTO or fetched from userId
+            return objectMapper.writeValueAsString(postService.createPost(postDTO, userId));
+        } catch (Exception ex) {
+            // Log and handle exceptions appropriately
+            return "error creating post";
         }
     }
 
