@@ -13,7 +13,7 @@ public class PostMapperService implements MapperService<Post, PostDTO> {
     public Post mapToEntity(PostDTO postDTO) {
         Post post = new Post();
         post.setId(postDTO.getId());
-        post.setUser(new UserMapperService().mapToEntity(postDTO.getUser()));
+        post.setUser(post.getUser() != null ? new UserMapperService().mapToEntity(postDTO.getUser()): null);
         post.setContent(postDTO.getContent());
         post.setMediaFileContent(postDTO.getMediaContent());
         post.setMediaFileName(postDTO.getMediaName());
