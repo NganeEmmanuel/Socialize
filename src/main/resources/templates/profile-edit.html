@@ -63,24 +63,25 @@
                                     <form>
                                         <div class="form-group row align-items-center">
                                             <div class="col-md-12">
-                                                <div class="profile-img-edit">
-                                                <img class="profile-pic" src="../assets/images/user/11.png" alt="profile-pic">
+                                              <div class="profile-img-edit">
+                                                <img class="profile-pic" id="profile-image-preview" src="../assets/images/user/11.png" alt="profile-pic">
                                                 <div class="p-image">
-                                                    <i class="ri-pencil-line upload-button text-white"></i>
-                                                    <input class="file-upload" type="file" accept="image/*"/>
+                                                  <i class="ri-pencil-line upload-button text-white"></i>
+                                                  <input class="file-upload" type="file" accept="image/*" id="profile-image" onchange="previewProfileImage()">
                                                 </div>
-                                                </div>
+                                              </div>
                                             </div>
-                                        </div>
-                                        <div class=" row align-items-center">
+                                          </div>
+                                          <div class="row align-items-center">
                                             <div class="form-group col-sm-6">
-                                                <label for="lname" class="form-label">Last Name:</label>
-                                                <input type="text" class="form-control" id="lname" placeholder="Jhon">
+                                              <label for="lname" class="form-label">Last Name:</label>
+                                              <input type="text" class="form-control" id="lname" placeholder="Jhon">
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label for="uname" class="form-label">User Name:</label>
-                                                <input type="text" class="form-control" id="uname" placeholder="Bni@01">
+                                              <label for="uname" class="form-label">User Name:</label>
+                                              <input type="text" class="form-control" id="uname" placeholder="Bni@01">
                                             </div>
+                                          </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="form-label d-block">Gender:</label>
                                                 <div class="form-check form-check-inline">
@@ -93,7 +94,62 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                        <button type="submit" class="btn btn-primary" onclick="updateUserProfile()">Save Changes</button>
+
+                                        <script>
+                                            let profileImageBase64 = null;
+
+                                            function previewProfileImage() {
+                                            const profileImage = document.getElementById('profile-image').files[0];
+                                            const profileImagePreview = document.getElementById('profile-image-preview');
+
+                                            if (profileImage) {
+                                                const reader = new FileReader();
+                                                reader.onload = function() {
+                                                profileImagePreview.src = reader.result;
+                                                profileImageBase64 = reader.result.split(',')[1];
+                                                };
+                                                reader.readAsDataURL(profileImage);
+                                            } else {
+                                                profileImagePreview.src = '../assets/images/user/11.png';
+                                                profileImageBase64 = null;
+                                            }
+                                            } 
+
+                                            function updateUserProfile() {
+                                            const lastName = document.getElementById('lname').value;
+                                            const userName = document.getElementById('uname').value;
+
+                                            const payload = {
+                                                lastName: lastName,
+                                                userName: userName,
+                                                profileImage: profileImageBase64 // Use the base64-encoded profile image
+                                            };
+
+                                            sendProfileUpdateToBackend(payload);
+                                            }
+
+                                            function sendProfileUpdateToBackend(payload) {
+                                            fetch('/api/v1/user/edit/profile', {
+                                                method: 'PUT',
+                                                headers: {
+                                                'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify(payload)
+                                            })
+                                            .then(response => {
+                                                if (response.ok) {
+                                                console.log('Profile updated successfully');
+                                                } else {
+                                                console.error('Failed to update profile');
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                            });
+                                            }
+                                          </script>
+
                                         <button type="reset" class="btn bg-soft-danger">Cancle</button>
                                     </form>
                                 </div>
@@ -158,12 +214,11 @@
     <script th:src="@{/assets/js/sweetalert.js}"></script>
     <script th:src="@{/assets/js/charts/weather-chart.js}"></script>
     <script th:src="@{/assets/js/app.js}"></script>
-    <!-- Datepicker JavaScript -->
+  
     <script th:src="@{/assets/js/lottie.js}"></script>
 
     
 
-    <!-- offcanvas start -->
  
     <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
        <div class="offcanvas-header">

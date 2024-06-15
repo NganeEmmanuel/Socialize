@@ -42,12 +42,22 @@
                   </div>
                   <div class="user-detail text-center mb-3">
                      <div class="profile-img">
-                        <img src="../assets/images/user/11.png" alt="profile-img" class="avatar-130 img-fluid" />
+                       <img src="../assets/images/user/11.png" alt="profile-img" class="avatar-130 img-fluid" />
                      </div>
                      <div class="profile-detail">
-                        <h3 class="">Bni Cyst</h3>
+                       <h3 class="user-name"></h3>
                      </div>
-                  </div>
+                   </div>
+                   
+                   <script>
+                     const userDataString = localStorage.getItem('user');
+                     if (userDataString) {
+                       const userData = JSON.parse(userDataString);
+                       document.querySelector('.user-name').textContent = userData.name;
+                     } else {
+                       document.querySelector('.user-name').textContent = 'Set a name';
+                     }
+                   </script>
                   <div class="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
                      <div class="social-links">
                         <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
