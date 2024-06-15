@@ -453,7 +453,7 @@
           const token = localStorage.getItem('token');
           const user = localStorage.getItem('user');
 
-          fetch('/api/v1/post/new?userId='+user.id, {
+          fetch('/api/v1/post/new?userId=123", {
              method: 'POST',
              headers: {
                 'Authorization': `Bearer ${token}`,
