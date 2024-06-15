@@ -453,7 +453,12 @@
           const token = localStorage.getItem('token');
           const user = localStorage.getItem('user');
 
-          fetch('/api/v1/post/new?userId=123", {
+          let userId = user.id;  // Assuming user.id is your source for userId
+
+// Convert userId to a valid Long (number)
+          const url = '/api/v1/post/new'
+
+          fetch(url, {
              method: 'POST',
              headers: {
                 'Authorization': `Bearer ${token}`,
@@ -512,7 +517,7 @@
 
 
     <!-- offcanvas start -->
- 
+
     <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
        <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="shareBottomLabel">Share</h5>
@@ -548,4 +553,4 @@
        </div>
     </div>
   </body>
-</html>         
+</html>

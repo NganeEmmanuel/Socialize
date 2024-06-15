@@ -85,8 +85,7 @@ public class PostController {
     }
     @PostMapping("/new")
     public String createPost(@ModelAttribute PostDTO postDTO,
-                                              @RequestParam("file") MultipartFile file,
-                                              @RequestParam Long userId) {
+                                              @RequestParam("file") MultipartFile file) {
         try {
             // Set file details in PostDTO
             if (!file.isEmpty()) {
@@ -96,7 +95,7 @@ public class PostController {
             }
 
             // Assuming user details are set separately in postDTO or fetched from userId
-            return objectMapper.writeValueAsString(postService.createPost(postDTO, userId));
+            return objectMapper.writeValueAsString(postService.createPost(postDTO, 4L));
         } catch (Exception ex) {
             // Log and handle exceptions appropriately
             return "error creating post";
