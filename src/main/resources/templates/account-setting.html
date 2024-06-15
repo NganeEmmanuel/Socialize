@@ -1,0 +1,194 @@
+
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>SocialV | Responsive Bootstrap 5 Admin Dashboard Template</title>
+
+      <link rel="shortcut icon" th:href="@{/assets/images/favicon.ico}" />
+      <link rel="stylesheet" th:href="@{/assets/css/libs.min.css}">
+      <link rel="stylesheet" th:href="@{/assets/css/socialv.css}">
+      <link rel="stylesheet" th:href="@{/assets/vendor/fortawesome/fontawesome-free/css/all.min.css}">
+      <link rel="stylesheet" th:href="@{/assets/vendor/remixicon/fonts/remixicon.css}">
+      <link rel="stylesheet" th:href="@{/assets/vendor/vanillajs-datepicker/dist/css/datepicker.css}">
+      <link rel="stylesheet" th:href="@{/assets/vendor/line-awesome/dist/font-awesome-line-awesome/css/all.min.css}">
+      <link rel="stylesheet" th:href="@{/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css}">
+      
+  </head>
+  <body class="  ">
+    <!-- loader Start -->
+    <div id="loading">
+          <div id="loading-center">
+          </div>
+    </div>
+    <!-- loader END -->
+    <!-- Wrapper Start -->
+    <div class="wrapper">
+        <th:block th:include="fragments/navigation :: navigation"></th:block>
+        <div id="content-page" class="content-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Account Setting</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="acc-edit">
+                        <form>
+                            <div class="form-group">
+                            <label for="uname" class="form-label">User Name:</label>
+                            <input type="text" class="form-control" id="uname" value="Bni@01">
+                            </div>
+                            <div class="form-group">
+                            <label for="email" class="form-label">Email Id:</label>
+                            <input type="email" class="form-control" id="email" value="Bnijohn@gmail.com">
+                            </div>
+                            <div class="form-group">
+                            <label for="altemail" class="form-label">Alternate Email:</label>
+                            <input type="email" class="form-control" id="altemail" value="designtheme@gmail.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="d-block form-label">Language Known:</label>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="english" checked="">
+                                    <label class="form-check-label" for="english">English</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="french" checked="">
+                                    <label class="form-check-label" for="french">French</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="hindi">
+                                    <label class="form-check-label" for="hindi">Hindi</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="spanish" checked="">
+                                    <label class="form-check-label" for="spanish">Spanish</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="arabic">
+                                    <label class="form-check-label" for="arabic">Arabic</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" id="italian">
+                                    <label class="form-check-label" for="italian">Italian</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                            <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Social Media</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="acc-edit">
+                        <form>
+                            <div class="form-group">
+                                <label for="facebook" class="form-label">Facebook:</label>
+                                <input type="text" class="form-control" id="facebook" value="www.facebook.com">
+                            </div>
+                            <div class="form-group">
+                            <label for="twitter" class="form-label">Twitter:</label>
+                            <input type="text" class="form-control" id="twitter" value="www.twitter.com">
+                            </div>
+                            <div class="form-group">
+                            <label for="google" class="form-label">Google +:</label>
+                            <input type="text" class="form-control" id="google" value="www.google.com">
+                            </div>
+                            <div class="form-group">
+                            <label for="instagram" class="form-label">Instagram:</label>
+                            <input type="text" class="form-control" id="instagram" value="www.instagram.com">
+                            </div>
+                            <div class="form-group">
+                            <label for="youtube" class="form-label">You Tube:</label>
+                            <input type="text" class="form-control" id="youtube" value="www.youtube.com">
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                            <button type="reset" class="btn bg-soft-danger">Cancle</button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      </div>
+    </div>
+    <!-- Wrapper End-->
+    <footer class="iq-footer bg-white">
+       <div class="container-fluid">
+          <div class="row">
+             <div class="col-lg-6">
+                <ul class="list-inline mb-0">
+                   <li class="list-inline-item"><a href="../dashboard/privacy-policy.html">Privacy Policy</a></li>
+                   <li class="list-inline-item"><a href="../frontend/html/dashboard/terms-of-service.html">Terms of Use</a></li>
+                </ul>
+             </div>
+             <div class="col-lg-6 d-flex justify-content-end">
+                Copyright 2020 <a href="#">SocialV</a> All Rights Reserved.
+             </div>
+          </div>
+       </div>
+    </footer>    <!-- Backend Bundle JavaScript -->
+    <script th:src="@{/assets/js/libs.min.js}"></script>
+    <script th:src="@{/assets/js/slider.js}"></script>
+    <script th:src="@{/assets/js/masonry.pkgd.min.js}"></script>
+    <script th:src="@{/assets/js/enchanter.js}"></script>
+    <script th:src="@{/assets/js/sweetalert.js}"></script>
+    <script th:src="@{/assets/js/charts/weather-chart.js}"></script>
+    <script th:src="@{/assets/js/app.js}"></script>
+    <!-- Datepicker JavaScript -->
+    <script th:src="@{/assets/js/lottie.js}"></script>
+    
+
+    <!-- offcanvas start -->
+ 
+    <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
+       <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="shareBottomLabel">Share</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+       </div>
+       <div class="offcanvas-body small">
+          <div class="d-flex flex-wrap align-items-center">
+             <div class="text-center me-3 mb-3">
+                <img src="../assets/images/icon/08.png" class="img-fluid rounded mb-2" alt="">
+                <h6>Facebook</h6>
+             </div>
+             <div class="text-center me-3 mb-3">
+                <img src="../assets/images/icon/09.png" class="img-fluid rounded mb-2" alt="">
+                <h6>Twitter</h6>
+             </div>
+             <div class="text-center me-3 mb-3">
+                <img src="../assets/images/icon/10.png" class="img-fluid rounded mb-2" alt="">
+                <h6>Instagram</h6>
+             </div>
+             <div class="text-center me-3 mb-3">
+                <img src="../assets/images/icon/11.png" class="img-fluid rounded mb-2" alt="">
+                <h6>Google Plus</h6>
+             </div>
+             <div class="text-center me-3 mb-3">
+                <img src="../assets/images/icon/13.png" class="img-fluid rounded mb-2" alt="">
+                <h6>In</h6>
+             </div>
+             <div class="text-center me-3 mb-3">
+                <img src="../assets/images/icon/12.png" class="img-fluid rounded mb-2" alt="">
+                <h6>YouTube</h6>
+             </div>
+          </div>
+       </div>
+    </div>
+  </body>
+</html>
