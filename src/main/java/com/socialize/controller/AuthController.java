@@ -1,5 +1,7 @@
 package com.socialize.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialize.auth.AuthenticationRefreshResponse;
 import com.socialize.auth.AuthenticationRequest;
 import com.socialize.auth.AuthenticationResponse;
@@ -8,7 +10,6 @@ import com.socialize.dto.UserDTO;
 import com.socialize.service.entityService.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/signup")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
@@ -41,13 +43,13 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/get-looged-user")
-    public ResponseEntity<UserDTO> getLoggedInUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
+    @GetMapping("/get-logged-user")
+    public String getLoggedInUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) throws JsonProcessingException {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
-            return ResponseEntity.ok(authService.getLoggedInUser(token));
+            return objectMapper.writeValueAsString(authService.getLoggedInUser(token));
         } else {
-            return ResponseEntity.badRequest().body(new UserDTO());
+            return "error getting user";
         }
     }
 
