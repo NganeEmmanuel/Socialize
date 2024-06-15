@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return respons.json();
             })
             .then(userData => {
-
+                console.log(JSON.stringify(userData))
                 // Save user data to localStorage
                 localStorage.setItem('user', JSON.stringify(userData));
 
